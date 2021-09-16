@@ -1,3 +1,31 @@
+########## 
+git add .
+fatal: in unpopulated submodule 'poky/meta-openembedded'
+
+git rm --cached meta-openembedded -f
+fatal: pathspec 'meta-openembedded' did not match any files
+jackbwang@ubu-91492:/media/jackbwang/SAMPLE/temp/jack_poky_selinux/poky/meta-openembedded$ cd ..
+jackbwang@ubu-91492:/media/jackbwang/SAMPLE/temp/jack_poky_selinux/poky$ git rm --cached meta-openembedded -f
+rm 'poky/meta-openembedded'
+jackbwang@ubu-91492:/media/jackbwang/SAMPLE/temp/jack_poky_selinux/poky$ git status 
+On branch open_branch_1
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	deleted:    meta-openembedded
+
+git add meta-openembedded
+
+
+git checkout -b "branch_name"
+git commit -m "something"
+git push --set-upstream origin open_branch_1
+User:jwang3089
+Password:token
+
+
+
+
 ########### checkin using tokens
 https://github.com
 Login: jwang3089
@@ -6,6 +34,10 @@ Setting:
 Developer Settings:
 Personal access tokes:
 git push https://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@github.com/jwang3089/jack_poky_selinux.git/
+
+git push --set-upstream origin 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@branch_names
+
+
 
 ########### dunfell:
 
