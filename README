@@ -27,6 +27,8 @@ Developer Settings:
 Personal access tokes:
 git push https://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@github.com/jwang3089/jack_poky_selinux.git/
 
+git push --set-upstream origin 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@branch_names
+
 ########### dunfell:
 
 ########### yocto:
