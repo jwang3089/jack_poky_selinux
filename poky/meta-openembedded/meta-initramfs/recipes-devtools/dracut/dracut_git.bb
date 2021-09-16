@@ -6,15 +6,18 @@ LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://COPYING;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 
 PE = "1"
-PV = "051"
+PV = "049"
 
-SRCREV = "e473057ae1de303340dec297c786c4a701cc61bd"
+# v048 tag
+SRCREV = "225e4b94cbdb702cf512490dcd2ad9ca5f5b22c1"
 SRC_URI = "git://git.kernel.org/pub/scm/boot/dracut/dracut.git;protocol=http \
            file://0001-util.h-include-sys-reg.h-when-libc-glibc.patch \
+           file://0001-dracut.sh-improve-udevdir.patch \
+           file://0001-set-viriable-_drv-not-local.patch \
            "
 
 DEPENDS += "kmod"
-DEPENDS:append:libc-musl = " fts"
+DEPENDS_append_libc-musl = " fts"
 
 inherit bash-completion pkgconfig
 
@@ -37,7 +40,7 @@ PACKAGECONFIG[systemd] = "--with-systemdsystemunitdir=${systemd_unitdir}/system/
 
 EXTRA_OEMAKE += 'libdir=${prefix}/lib LDLIBS="${LDLIBS}"'
 
-LDLIBS:append:libc-musl = " -lfts"
+LDLIBS_append_libc-musl = " -lfts"
 
 do_configure() {
     ./configure ${EXTRA_OECONF}
@@ -50,22 +53,19 @@ do_install() {
     chown -R root:root ${D}/${prefix}/lib/dracut/modules.d
 }
 
-FILES:${PN} += "${prefix}/lib/kernel \
+FILES_${PN} += "${prefix}/lib/kernel \
                 ${prefix}/lib/dracut \
                 ${systemd_unitdir} \
                "
-FILES:${PN}-dbg += "${prefix}/lib/dracut/.debug"
+FILES_${PN}-dbg += "${prefix}/lib/dracut/.debug"
 
-CONFFILES:${PN} += "${sysconfdir}/dracut.conf"
+CONFFILES_${PN} += "${sysconfdir}/dracut.conf"
 
-RDEPENDS:${PN} = "findutils cpio util-linux-blkid util-linux-getopt util-linux bash ldd"
+RDEPENDS_${PN} = "findutils cpio util-linux-blkid util-linux-getopt util-linux bash ldd"
 
 # This could be optimized a bit, but let's avoid non-booting systems :)
-RRECOMMENDS:${PN} = " \
+RRECOMMENDS_${PN} = " \
                      kernel-modules \
                      busybox \
                      coreutils \
                     "
-
-# CVE-2010-4176 affects only Fedora
-CVE_CHECK_WHITELIST += "CVE-2010-4176"

@@ -18,7 +18,7 @@ DEPENDS = "virtual/kernel"
 EXTRA_OEMAKE="CROSS_COMPILE=${TARGET_PREFIX} CC='${CC} ${LDFLAGS}' \
               KERNEL_DIR=${STAGING_KERNEL_DIR} "
 
-do_compile:prepend () {
+do_compile_prepend () {
     oe_runmake clean
 }
 
@@ -28,4 +28,4 @@ do_install() {
     install sethdlc ${D}/${bindir}/
 }
 
-FILES:${PN} += "${bindir}/sethdlc"
+FILES_${PN} += "${bindir}/sethdlc"

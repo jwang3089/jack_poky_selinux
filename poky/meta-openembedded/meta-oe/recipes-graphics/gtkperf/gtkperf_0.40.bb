@@ -21,13 +21,13 @@ inherit features_check autotools binconfig pkgconfig gettext
 
 REQUIRED_DISTRO_FEATURES = "x11"
 
-do_configure:prepend () {
+do_configure_prepend () {
     rm -f ${S}/m4/init.m4
     cp -f ${WORKDIR}/Makevars ${S}/po/
 }
 
-do_install:append () {
+do_install_append () {
     rm -rf ${D}/${exec_prefix}/doc
 }
 
-FILES:${PN} += "${exec_prefix}/share/duck.png"
+FILES_${PN} += "${exec_prefix}/share/duck.png"

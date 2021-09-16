@@ -18,9 +18,9 @@ DEPENDS += "${@bb.utils.contains('DISTRO_FEATURES', 'snmp', 'net-snmp', '', d)}"
 SNMP_CONF="${@bb.utils.contains('DISTRO_FEATURES', 'snmp', '--enable-snmp', '', d)}"
 
 # the "ip" command from busybox is not sufficient (flush by protocol flushes all routes)
-RDEPENDS:${PN} += "iproute2"
+RDEPENDS_${PN} += "iproute2"
 
-SRC_URI = "https://github.com/Quagga/quagga/releases/download/quagga-${PV}/quagga-${PV}.tar.gz \
+SRC_URI = "${SAVANNAH_GNU_MIRROR}/quagga/quagga-${PV}.tar.gz; \
            file://quagga.init \
            file://quagga.default \
            file://watchquagga.init \
@@ -40,18 +40,16 @@ PACKAGECONFIG ??= "${@bb.utils.filter('DISTRO_FEATURES', 'pam', d)}"
 PACKAGECONFIG[cap] = "--enable-capabilities,--disable-capabilities,libcap"
 PACKAGECONFIG[pam] = "--with-libpam, --without-libpam, libpam"
 
-inherit autotools update-rc.d useradd systemd pkgconfig multilib_header update-alternatives
-
-CFLAGS += "-fcommon"
+inherit autotools update-rc.d useradd systemd pkgconfig multilib_header
 
 SYSTEMD_PACKAGES = "${PN} ${PN}-bgpd ${PN}-isisd ${PN}-ospf6d ${PN}-ospfd ${PN}-ripd ${PN}-ripngd"
-SYSTEMD_SERVICE:${PN}-bgpd = "bgpd.service"
-SYSTEMD_SERVICE:${PN}-isisd = "isisd.service"
-SYSTEMD_SERVICE:${PN}-ospf6d = "ospf6d.service"
-SYSTEMD_SERVICE:${PN}-ospfd = "ospfd.service"
-SYSTEMD_SERVICE:${PN}-ripd = "ripd.service"
-SYSTEMD_SERVICE:${PN}-ripngd = "ripngd.service"
-SYSTEMD_SERVICE:${PN} = "zebra.service"
+SYSTEMD_SERVICE_${PN}-bgpd = "bgpd.service"
+SYSTEMD_SERVICE_${PN}-isisd = "isisd.service"
+SYSTEMD_SERVICE_${PN}-ospf6d = "ospf6d.service"
+SYSTEMD_SERVICE_${PN}-ospfd = "ospfd.service"
+SYSTEMD_SERVICE_${PN}-ripd = "ripd.service"
+SYSTEMD_SERVICE_${PN}-ripngd = "ripngd.service"
+SYSTEMD_SERVICE_${PN} = "zebra.service"
 
 EXTRA_OECONF = "--sysconfdir=${sysconfdir}/quagga \
                 --localstatedir=${localstatedir}/run/quagga \
@@ -81,7 +79,7 @@ do_install () {
     install -m 0644 ${WORKDIR}/watchquagga.default ${D}${sysconfdir}/default/watchquagga
     install -m 0755 ${WORKDIR}/quagga.init ${D}${sysconfdir}/init.d/quagga
     install -m 0755 ${WORKDIR}/watchquagga.init ${D}${sysconfdir}/init.d/watchquagga
-    install -m 0644 ${WORKDIR}/volatiles.03_quagga  ${D}${sysconfdir}/default/volatiles/03_quagga
+    install -m 0644 ${WORKDIR}/volatiles.03_quagga  ${D}${sysconfdir}/default/volatiles/volatiles.03_quagga
 
     # Install sample configurations for the daemons
     for f in bgpd vtysh isisd ospfd ripngd zebra ripd ospf6d; do
@@ -106,7 +104,7 @@ do_install () {
     sed -i 's!/usr/sbin/!${sbindir}/!g' ${D}${sysconfdir}/init.d/*
     sed -i 's!/usr/bin/!${bindir}/!g' ${D}${sysconfdir}/init.d/quagga
     sed -i 's!/etc/!${sysconfdir}/!g' ${D}${sysconfdir}/init.d/* ${D}${sysconfdir}/default/watchquagga
-    sed -i 's!/var/!${localstatedir}/!g' ${D}${sysconfdir}/init.d/* ${D}${sysconfdir}/default/volatiles/03_quagga
+    sed -i 's!/var/!${localstatedir}/!g' ${D}${sysconfdir}/init.d/* ${D}${sysconfdir}/default/volatiles/volatiles.03_quagga
     sed -i 's!^PATH=.*!PATH=${base_sbindir}:${sbindir}:${base_bindir}:${bindir}!' ${D}${sysconfdir}/init.d/*
     sed -i 's!--with-libtool-sysroot=[^ "]*!!' ${D}${includedir}/quagga/version.h
 
@@ -144,8 +142,8 @@ do_install () {
         -i ${D}${systemd_unitdir}/system/*.service
 }
 
-DEPENDS:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'systemd-systemctl-native', '', d)}"
-pkg_postinst:${PN} () {
+DEPENDS_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'systemd-systemctl-native', '', d)}"
+pkg_postinst_${PN} () {
     if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd sysvinit', 'true', 'false', d)}; then
         if [ -n "$D" ]; then
             OPTS="--root=$D"
@@ -159,22 +157,22 @@ PACKAGE_BEFORE_PN = "${PN}-ospfd ${PN}-ospf6d ${PN}-bgpd \
                      ${PN}-ripd ${PN}-ripngd ${PN}-isisd \
                      ${PN}-ospfclient ${@bb.utils.contains('DISTRO_FEATURES', 'sysvinit', '${PN}-watchquagga', '', d)}"
 
-RDEPENDS:${PN} += "${PN}-bgpd ${PN}-isisd ${PN}-ospf6d ${PN}-ospfd ${PN}-ripd ${PN}-ripngd"
+RDEPENDS_${PN} += "${PN}-bgpd ${PN}-isisd ${PN}-ospf6d ${PN}-ospfd ${PN}-ripd ${PN}-ripngd"
 
-FILES:${PN}-ospfd       = "${sbindir}/ospfd ${libdir}/libospf.so.*"
-FILES:${PN}-ospf6d      = "${sbindir}/ospf6d"
-FILES:${PN}-bgpd        = "${sbindir}/bgpd"
-FILES:${PN}-ripd        = "${sbindir}/ripd"
-FILES:${PN}-ripngd      = "${sbindir}/ripngd"
-FILES:${PN}-isisd       = "${sbindir}/isisd"
-FILES:${PN}-ospfclient  = "${sbindir}/ospfclient ${libdir}/libospfapiclient.so.*"
-FILES:${PN}-watchquagga = "${sbindir}/watchquagga ${sysconfdir}/default/watchquagga \
+FILES_${PN}-ospfd       = "${sbindir}/ospfd ${libdir}/libospf.so.*"
+FILES_${PN}-ospf6d      = "${sbindir}/ospf6d"
+FILES_${PN}-bgpd        = "${sbindir}/bgpd"
+FILES_${PN}-ripd        = "${sbindir}/ripd"
+FILES_${PN}-ripngd      = "${sbindir}/ripngd"
+FILES_${PN}-isisd       = "${sbindir}/isisd"
+FILES_${PN}-ospfclient  = "${sbindir}/ospfclient ${libdir}/libospfapiclient.so.*"
+FILES_${PN}-watchquagga = "${sbindir}/watchquagga ${sysconfdir}/default/watchquagga \
                            ${sysconfdir}/init.d/watchquagga"
 
-FILES:${PN} += "${nonarch_libdir}/tmpfiles.d/*.conf"
+FILES_${PN} += "${nonarch_libdir}/tmpfiles.d/*.conf"
 
 # Indicate that the default files are configuration files
-CONFFILES:${PN} = "${sysconfdir}/default/quagga \
+CONFFILES_${PN} = "${sysconfdir}/default/quagga \
                    ${sysconfdir}/quagga/bgpd.conf \
                    ${sysconfdir}/quagga/vtysh.conf \
                    ${sysconfdir}/quagga/isisd.conf \
@@ -184,60 +182,56 @@ CONFFILES:${PN} = "${sysconfdir}/default/quagga \
                    ${sysconfdir}/quagga/ripd.conf \
                    ${sysconfdir}/quagga/ospf6d.conf \
                   "
-CONFFILES:${PN}-watchquagga = "${sysconfdir}/default/watchquagga"
+CONFFILES_${PN}-watchquagga = "${sysconfdir}/default/watchquagga"
 
 # Stop the names being rewritten due to the internal shared libraries
-DEBIAN_NOAUTONAME:${PN}-ospfd = "1"
-DEBIAN_NOAUTONAME:${PN}-ospfclient = "1"
+DEBIAN_NOAUTONAME_${PN}-ospfd = "1"
+DEBIAN_NOAUTONAME_${PN}-ospfclient = "1"
 
 # Main init script starts all deamons
 # Seperate init script for watchquagga
 INITSCRIPT_PACKAGES                     = "${PN} ${PN}-watchquagga"
-INITSCRIPT_NAME:${PN}                   = "quagga"
-INITSCRIPT_PARAMS:${PN}                 = "defaults 15 85"
-INITSCRIPT_NAME:${PN}-watchquagga       = "watchquagga"
-INITSCRIPT_PARAMS:${PN}-watchquagga     = "defaults 90 10"
+INITSCRIPT_NAME_${PN}                   = "quagga"
+INITSCRIPT_PARAMS_${PN}                 = "defaults 15 85"
+INITSCRIPT_NAME_${PN}-watchquagga       = "watchquagga"
+INITSCRIPT_PARAMS_${PN}-watchquagga     = "defaults 90 10"
 
 # Add quagga's user and group
 USERADD_PACKAGES = "${PN}"
-GROUPADD_PARAM:${PN} = "--system quagga ; --system quaggavty"
-USERADD_PARAM:${PN} = "--system --home ${localstatedir}/run/quagga/ -M -g quagga -G quaggavty --shell /bin/false quagga"
+GROUPADD_PARAM_${PN} = "--system quagga ; --system quaggavty"
+USERADD_PARAM_${PN} = "--system --home ${localstatedir}/run/quagga/ -M -g quagga -G quaggavty --shell /bin/false quagga"
 
-pkg_postinst:${PN} () {
+pkg_postinst_${PN} () {
     if [ -z "$D" ] && [ -e /etc/init.d/populate-volatile.sh ] ; then
         ${sysconfdir}/init.d/populate-volatile.sh update
     fi
 }
 
 # Stop apps before uninstall
-pkg_prerm:${PN} () {
+pkg_prerm_${PN} () {
     ${sysconfdir}/init.d/quagga stop
 }
 
-pkg_prerm:${PN}-ospfd () {
+pkg_prerm_${PN}-ospfd () {
     ${sysconfdir}/init.d/quagga stop ospfd
 }
 
-pkg_prerm:${PN}-ospf6d () {
+pkg_prerm_${PN}-ospf6d () {
     ${sysconfdir}/init.d/quagga stop ospf6d
 }
 
-pkg_prerm:${PN}-bgpd () {
+pkg_prerm_${PN}-bgpd () {
     ${sysconfdir}/init.d/quagga stop bgpd
 }
 
-pkg_prerm:${PN}-ripd () {
+pkg_prerm_${PN}-ripd () {
     ${sysconfdir}/init.d/quagga stop ripd
 }
 
-pkg_prerm:${PN}-ripngd () {
+pkg_prerm_${PN}-ripngd () {
     ${sysconfdir}/init.d/quagga stop ripngd
 }
 
-pkg_prerm:${PN}-isisd () {
+pkg_prerm_${PN}-isisd () {
     ${sysconfdir}/init.d/quagga stop isisd
 }
-
-ALTERNATIVE:${PN} = "pimd"
-ALTERNATIVE_LINK_NAME[pimd] = "${sbindir}/pimd"
-

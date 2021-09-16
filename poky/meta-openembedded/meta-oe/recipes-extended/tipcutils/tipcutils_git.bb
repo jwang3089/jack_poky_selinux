@@ -15,15 +15,15 @@ inherit autotools pkgconfig
 
 DEPENDS += "libdaemon"
 
-RDEPENDS:${PN} = "iproute2-tipc"
+RDEPENDS_${PN} = "iproute2-tipc"
 
 S = "${WORKDIR}/git"
 
-do_configure:prepend() {
+do_configure_prepend() {
     ( cd ${S}; ${S}/bootstrap )
 }
 
-do_install:append() {
+do_install_append() {
     demos="benchmark hello_world topology_subscr_demo connection_demo \
            multicast_demo stream_demo"
     for i in $demos;do
@@ -44,6 +44,6 @@ do_install:append() {
 }
 
 PACKAGES += "${PN}-demos"
-FILES:${PN}-dbg += "/opt/tipcutils/demos/*/.debug /opt/tipcutils/ptts/.debug"
-FILES:${PN}-demos = "/opt/tipcutils/*"
+FILES_${PN}-dbg += "/opt/tipcutils/demos/*/.debug /opt/tipcutils/ptts/.debug"
+FILES_${PN}-demos = "/opt/tipcutils/*"
 

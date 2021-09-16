@@ -1,4 +1,4 @@
-SUMMARY = "spawn-fcgi is used to spawn FastCGI applications"
+SUMMARRY = "spawn-fcgi is used to spawn FastCGI applications"
 HOMEPAGE = "http://redmine.lighttpd.net/projects/spawn-fcgi"
 
 LICENSE = "BSD-3-Clause"

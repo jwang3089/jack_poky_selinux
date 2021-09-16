@@ -11,39 +11,28 @@ PACKAGES = ' \
     packagegroup-meta-webserver-webadmin \
 '
 
-RDEPENDS:packagegroup-meta-webserver = "\
+RDEPENDS_packagegroup-meta-webserver = "\
     packagegroup-meta-webserver-http \
     packagegroup-meta-webserver-php \
     packagegroup-meta-webserver-support \
     packagegroup-meta-webserver-webadmin \
 "
 
-RDEPENDS:packagegroup-meta-webserver-http = "\
-    apache-websocket \
-    apache2 \
+RDEPENDS_packagegroup-meta-webserver-http = "\
+    nginx monkey hiawatha apache-websocket \
+    apache2 sthttpd \
     ${@bb.utils.contains("BBFILE_COLLECTIONS", "meta-python2", "cherokee", "", d)} \
-    hiawatha \
-    monkey \
-    nginx \
-    nginx \
-    sthttpd \
-"
+    "
 
-RDEPENDS:packagegroup-meta-webserver-php = "\
-    phpmyadmin \
-    xdebug \
-"
+RDEPENDS_packagegroup-meta-webserver-php = "\
+    phpmyadmin xdebug \
+    "
 
-RDEPENDS:packagegroup-meta-webserver-support = "\
-    spawn-fcgi \
-    fcgi \
-    fcgiwrap \
-"
+RDEPENDS_packagegroup-meta-webserver-support = "\
+    spawn-fcgi fcgi \
+    "
 
-RDEPENDS:packagegroup-meta-webserver-webadmin = "\
-    cockpit \
-    webmin \
-    netdata \
-"
-
+RDEPENDS_packagegroup-meta-webserver-webadmin = "\
+    netdata webmin \
+    "
 EXCLUDE_FROM_WORLD = "1"

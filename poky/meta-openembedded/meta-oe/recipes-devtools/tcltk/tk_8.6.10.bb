@@ -28,8 +28,6 @@ SRC_URI[sha256sum] = "63df418a859d0a463347f95ded5cd88a3dd3aaa1ceecaeee362194bc30
 
 S = "${WORKDIR}/${BPN}${PV}/unix"
 
-PSEUDO_IGNORE_PATHS .= ",${WORKDIR}/${BPN}${PV}"
-
 # Short version format: "8.6"
 VER = "${@os.path.splitext(d.getVar('PV'))[0]}"
 
@@ -45,7 +43,7 @@ EXTRA_OECONF = "\
     --libdir=${libdir} \
 "
 export TK_LIBRARY='${libdir}/tk${VER}'
-do_install:append() {
+do_install_append() {
     ln -sf libtk${VER}.so ${D}${libdir}/libtk${VER}.so.0
     oe_libinstall -so libtk${VER} ${D}${libdir}
     ln -sf wish${VER} ${D}${bindir}/wish
@@ -62,12 +60,12 @@ PACKAGECONFIG[xss] = "--enable-xss,--disable-xss,libxscrnsaver libxext"
 
 PACKAGES =+ "${PN}-lib"
 
-FILES:${PN}-lib = "${libdir}/libtk${VER}.so*"
-FILES:${PN} += "${libdir}/tk*"
+FILES_${PN}-lib = "${libdir}/libtk${VER}.so*"
+FILES_${PN} += "${libdir}/tk*"
 
 # isn't getting picked up by shlibs code
-RDEPENDS:${PN} += "tk-lib"
-RDEPENDS:${PN}:class-native = ""
+RDEPENDS_${PN} += "tk-lib"
+RDEPENDS_${PN}_class-native = ""
 
 BBCLASSEXTEND = "native nativesdk"
 

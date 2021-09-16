@@ -19,7 +19,7 @@ SRC_URI += " \
 "
 
 LKSTRFTIME = "HAVE_LKSTRFTIME=ON"
-LKSTRFTIME:libc-musl = "HAVE_LKSTRFTIME=OFF"
+LKSTRFTIME_libc-musl = "HAVE_LKSTRFTIME=OFF"
 
 # For arm qemu-arm runs at 100% CPU load and never returns - so disable introspection for now
 GI_DATA_ENABLED="False"
@@ -46,7 +46,7 @@ PACKAGECONFIG[openldap] = "-DWITH_OPENLDAP=ON,-DWITH_OPENLDAP=OFF,openldap"
 # -ldb needs this on some platforms
 LDFLAGS += "-lpthread -lgmodule-2.0 -lgthread-2.0"
 
-do_configure:append () {
+do_configure_append () {
     cp ${WORKDIR}/iconv-detect.h ${S}/src
 
     # fix native perl shebang
@@ -57,14 +57,14 @@ do_configure:append () {
         -e 's: ${bindir}/g-ir-scanner-wrapper: ${STAGING_BINDIR}/g-ir-scanner-wrapper:g'
 }
 
-do_compile:prepend() {
+do_compile_prepend() {
     export GIR_EXTRA_LIBS_PATH="${B}/camel/.libs:${B}/libedataserver/.libs"
 }
 
-FILES:${PN} =+ " \
+FILES_${PN} =+ " \
     ${datadir}/dbus-1 \
     ${datadir}/evolution-data-server-*/ui/ \
     ${systemd_user_unitdir} \
 "
 
-RDEPENDS:${PN} += "perl"
+RDEPENDS_${PN} += "perl"

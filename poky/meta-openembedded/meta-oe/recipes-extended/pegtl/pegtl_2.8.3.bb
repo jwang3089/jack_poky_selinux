@@ -10,5 +10,3 @@ SRC_URI = "git://github.com/taocpp/PEGTL.git;protocol=https;branch=2.x \
 inherit cmake
 
 S = "${WORKDIR}/git"
-
-CXXFLAGS += " -Wno-error=type-limits"

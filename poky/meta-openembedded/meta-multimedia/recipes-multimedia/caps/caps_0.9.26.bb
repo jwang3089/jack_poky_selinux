@@ -24,4 +24,4 @@ do_install() {
     install -Dm 0644 caps.so ${D}${libdir}/ladspa/caps.so
 }
 
-FILES:${PN} = "${libdir}/ladspa/"
+FILES_${PN} = "${libdir}/ladspa/"

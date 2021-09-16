@@ -26,9 +26,9 @@ do_install() {
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
-RDEPENDS:${PN} = "bash"
+RDEPENDS_${PN} = "bash"
 
-python do_package:prepend() {
+python do_package_prepend() {
     d.setVar('PKGV', d.getVar("KERNEL_VERSION").split("-")[0])
 }
 

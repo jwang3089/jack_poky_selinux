@@ -24,10 +24,10 @@ EXTRA_OECONF += " \
     --disable-doc \
 "
 
-do_configure:prepend() {
+do_configure_prepend() {
      touch ${S}/NEWS ${S}/AUTHORS
 }
 
-FILES:${PN} += "${libdir}/thunar-archive-plugin"
+FILES_${PN} += "${libdir}/thunar-archive-plugin"
 
-RRECOMMENDS:${PN} = "lzop zip tar bzip2 unzip xz p7zip"
+RRECOMMENDS_${PN} = "lzop zip tar bzip2 unzip xz p7zip"

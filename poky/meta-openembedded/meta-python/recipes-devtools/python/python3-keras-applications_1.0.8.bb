@@ -14,6 +14,6 @@ S = "${WORKDIR}/git"
 
 BBCLASSEXTEND = "native"
 
-RDEPENDS:${PN} = "python3-numpy \
+RDEPENDS_${PN} = "python3-numpy \
                   python3-h5py \
                  "

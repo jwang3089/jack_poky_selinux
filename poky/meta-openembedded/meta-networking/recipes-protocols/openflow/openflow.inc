@@ -27,11 +27,11 @@ S = "${WORKDIR}/git"
 
 inherit autotools-brokensep pkgconfig
 
-do_configure:prepend() {
+do_configure_prepend() {
     ./boot.sh
 }
 
-do_install:append() {
+do_install_append() {
     # Remove /var/run as it is created on startup
     rm -rf ${D}${localstatedir}/run
 }

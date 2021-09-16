@@ -13,7 +13,7 @@ S = "${WORKDIR}/Encode-Locale-${PV}"
 
 inherit cpan
 
-RDEPENDS:${PN} += "libencode-perl \
+RDEPENDS_${PN} += "libencode-perl \
                    libencode-alias-perl \
                    perl-module-base \
 "

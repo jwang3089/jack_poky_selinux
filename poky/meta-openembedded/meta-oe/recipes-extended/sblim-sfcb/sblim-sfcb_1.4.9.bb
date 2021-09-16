@@ -26,7 +26,6 @@ SRC_URI = "http://downloads.sourceforge.net/sblim/${BP}.tar.bz2 \
            file://0001-include-stdint.h-system-header-for-UINT16_MAX.patch \
            file://0001-Replace-need-for-error.h-when-it-does-not-exist.patch \
            file://sblim-sfcb-1.4.9-fix-sfcbinst2mof.patch \
-           file://0001-Avoid-variable-definition-in-header-files.patch \
 "
 
 SRC_URI[md5sum] = "28021cdabc73690a94f4f9d57254ce30"
@@ -36,10 +35,10 @@ inherit autotools
 inherit systemd
 
 SYSTEMD_PACKAGES = "${PN}"
-SYSTEMD_SERVICE:${PN} = "sblim-sfcb.service"
+SYSTEMD_SERVICE_${PN} = "sblim-sfcb.service"
 SYSTEMD_AUTO_ENABLE = "enable"
 
-LDFLAGS:append = "${@bb.utils.contains('DISTRO_FEATURES', 'ld-is-gold', ' -fuse-ld=bfd ', '', d)}"
+LDFLAGS_append = "${@bb.utils.contains('DISTRO_FEATURES', 'ld-is-gold', ' -fuse-ld=bfd ', '', d)}"
 
 EXTRA_OECONF = '--enable-debug \
                 --enable-ssl \
@@ -50,7 +49,7 @@ EXTRA_OECONF = '--enable-debug \
 # make all with -j option is unsafe.
 PARALLEL_MAKE = ""
 
-INSANE_SKIP:${PN} = "dev-so"
+INSANE_SKIP_${PN} = "dev-so"
 CONFIG_SITE = "${WORKDIR}/config-site.${P}"
 
 do_install() {
@@ -68,16 +67,16 @@ do_install() {
     rm -rf ${D}${libdir}/sfcb/*.la
 }
 
-pkg_postinst:${PN} () {
-    $INTERCEPT_DIR/postinst_intercept delay_to_first_boot ${PKG} mlprefix=${MLPREFIX}
-}
+pkg_postinst_${PN} () {
+    if [ x"$D" != "x" ]; then
+        $INTERCEPT_DIR/postinst_intercept delay_to_first_boot ${PKG} mlprefix=${MLPREFIX}
+    fi
 
-pkg_postinst_ontarget:${PN} () {
     ${datadir}/sfcb/genSslCert.sh ${sysconfdir}/sfcb
     ${bindir}/sfcbrepos -f
 }
 
-FILES:${PN} += "${libdir}/sfcb ${datadir}/sfcb"
-FILES:${PN}-dbg += "${libdir}/sfcb/.debug"
+FILES_${PN} += "${libdir}/sfcb ${datadir}/sfcb"
+FILES_${PN}-dbg += "${libdir}/sfcb/.debug"
 
-RDEPENDS:${PN} = "perl bash"
+RDEPENDS_${PN} = "perl bash"

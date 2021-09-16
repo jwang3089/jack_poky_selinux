@@ -16,7 +16,7 @@ S = "${WORKDIR}/ExtUtils-InstallPaths-${PV}"
 
 inherit cpan ptest-perl
 
-RDEPENDS:${PN} = " \
+RDEPENDS_${PN} = " \
     libextutils-config-perl \
     perl-module-bytes \
     perl-module-data-dumper \
@@ -25,7 +25,7 @@ RDEPENDS:${PN} = " \
     perl-module-test-more \
 "
 
-RDEPENDS:${PN}-ptest = " \
+RDEPENDS_${PN}-ptest = " \
     ${PN} \
     perl-module-file-spec-functions \
     perl-module-test-more \

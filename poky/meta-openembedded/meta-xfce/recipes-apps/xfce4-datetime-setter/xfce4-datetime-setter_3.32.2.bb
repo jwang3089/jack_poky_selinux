@@ -17,6 +17,6 @@ inherit gettext meson features_check
 
 REQUIRED_DISTRO_FEATURES = "systemd x11"
 
-FILES:${PN} += "${datadir}/icons/hicolor"
+FILES_${PN} += "${datadir}/icons/hicolor"
 
-RDEPENDS:${PN} = "tzdata"
+RDEPENDS_${PN} = "tzdata"

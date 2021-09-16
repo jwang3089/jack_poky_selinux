@@ -37,7 +37,7 @@ do_install() {
     cp -rf ${S}/examples ${D}${docdir}/${BPN}
 }
 
-RDEPENDS:${PN} += "\
+RDEPENDS_${PN} += "\
     shadow \
     perl-module-getopt-long \
     perl-module-overloading \
@@ -45,7 +45,7 @@ RDEPENDS:${PN} += "\
     perl-module-file-temp \
 "
 
-ALTERNATIVE:${PN} = "adduser deluser addgroup delgroup"
+ALTERNATIVE_${PN} = "adduser deluser addgroup delgroup"
 ALTERNATIVE_PRIORITY = "60"
 ALTERNATIVE_LINK_NAME[adduser] = "${sbindir}/adduser"
 ALTERNATIVE_LINK_NAME[deluser] = "${sbindir}/deluser"

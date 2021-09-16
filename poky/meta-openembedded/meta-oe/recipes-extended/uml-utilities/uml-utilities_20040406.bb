@@ -15,8 +15,6 @@ PR = "r1"
 
 S = "${WORKDIR}/tools"
 
-inherit update-alternatives
-
 do_compile() {
     oe_runmake LIB_DIR=${libdir}/uml
 }
@@ -25,7 +23,4 @@ do_install() {
     oe_runmake install DESTDIR=${D}
 }
 
-FILES:${PN} += "${libdir}/uml"
-
-ALTERNATIVE:${PN} = "tunctl"
-ALTERNATIVE_LINK_NAME[tunctl] = "${bindir}/tunctl"
+FILES_${PN} += "${libdir}/uml"

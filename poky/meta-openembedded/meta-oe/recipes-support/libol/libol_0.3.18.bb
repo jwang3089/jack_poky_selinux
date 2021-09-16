@@ -11,10 +11,10 @@ SRC_URI[sha256sum] = "9de3bf13297ff882e02a1e6e5f6bf760a544aff92a9d8a1cf4328a3200
 
 inherit autotools binconfig
 
-do_compile:prepend() {
+do_compile_prepend() {
     install ${S}/utils/make_class.in ${B}/utils
 }
 
-do_install:append() {
+do_install_append() {
     rm -fr ${D}${bindir}
 }

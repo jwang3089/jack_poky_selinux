@@ -1,6 +1,6 @@
 require ${BPN}.inc
 
-FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}-native:"
+FILESEXTRAPATHS_prepend := "${THISDIR}/${BPN}-native:"
 
 inherit meson native
 

@@ -35,10 +35,10 @@ do_install() {
     install -d ${D}/${bindir}
 }
 
-do_install:append:class-target() {
+do_install_append_class-target() {
     install -m755 ${S}/command/* ${D}/${bindir}
 }
 
 inherit update-alternatives
 ALTERNATIVE_PRIORITY = "100"
-ALTERNATIVE:${PN} = "svc svok"
+ALTERNATIVE_${PN} = "svc svok"

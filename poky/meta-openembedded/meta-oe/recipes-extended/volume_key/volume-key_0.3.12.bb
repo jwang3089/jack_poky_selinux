@@ -32,7 +32,7 @@ PACKAGECONFIG[python3] = "--with-python3,--without-python3,python3,python3"
 
 EXTRA_OECONF = "--without-python"
 
-RDEPENDS:python3-${BPN} += "${PN}"
+RDEPENDS_python3-${BPN} += "${PN}"
 
 PACKAGES += "python3-${BPN}"
-FILES:python3-${BPN} = "${PYTHON_SITEPACKAGES_DIR}/*"
+FILES_python3-${BPN} = "${PYTHON_SITEPACKAGES_DIR}/*"

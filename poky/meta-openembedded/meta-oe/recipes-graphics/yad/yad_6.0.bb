@@ -16,4 +16,4 @@ DEPENDS = "gtk+3 glib-2.0-native intltool-native"
 
 S = "${WORKDIR}/git"
 
-FILES:${PN} += "${datadir}/icons/"
+FILES_${PN} += "${datadir}/icons/"

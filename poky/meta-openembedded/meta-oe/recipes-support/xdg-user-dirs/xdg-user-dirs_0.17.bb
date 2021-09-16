@@ -10,7 +10,7 @@ inherit autotools gettext
 
 EXTRA_OECONF = "--disable-documentation"
 
-CONFFILES:${PN} += " \
+CONFFILES_${PN} += " \
     ${sysconfdir}/xdg/user-dirs.conf \
     ${sysconfdir}/xdg/user-dirs.defaults \
 "

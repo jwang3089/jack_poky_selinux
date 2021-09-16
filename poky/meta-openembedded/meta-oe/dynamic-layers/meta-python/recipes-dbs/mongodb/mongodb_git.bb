@@ -9,12 +9,12 @@ DEPENDS = "openssl libpcap zlib boost curl python3 \
            python3-psutil-native python3-regex-native \
            "
 
-inherit scons dos2unix siteinfo python3native systemd useradd
+inherit scons dos2unix siteinfo python3native
 
-PV = "4.4.7"
-#v4.4.7
-SRCREV = "abb6b9c2bf675e9e2aeaecba05f0f8359d99e203"
-SRC_URI = "git://github.com/mongodb/mongo.git;branch=v4.4 \
+PV = "4.2.2"
+#v4.2.2
+SRCREV = "a0bbbff6ada159e19298d37946ac8dc4b497eadf"
+SRC_URI = "git://github.com/mongodb/mongo.git;branch=v4.2 \
            file://0001-Tell-scons-to-use-build-settings-from-environment-va.patch \
            file://0001-Use-long-long-instead-of-int64_t.patch \
            file://0001-Use-__GLIBC__-to-control-use-of-gnu_get_libc_version.patch \
@@ -24,25 +24,16 @@ SRC_URI = "git://github.com/mongodb/mongo.git;branch=v4.4 \
            file://0001-Support-deprecated-resolver-functions.patch \
            file://0003-Fix-unknown-prefix-env.patch \
            file://1296.patch \
-           file://0001-Fix-compilation-with-fno-common.patch \
-           file://0001-stacktrace-Define-ARCH_BITS-for-x86.patch \
-           file://0001-include-needed-c-header.patch \
-           file://disable_runtime_check.patch \
-           file://ppc64_ARCH_BITS.patch \
-           file://0001-Do-not-use-MINSIGSTKSZ.patch \
-           file://0001-Use-explicit-typecast-to-size_t.patch \
-           file://PTHREAD_STACK_MIN.patch \
            "
-SRC_URI:append:libc-musl ="\
+SRC_URI_append_libc-musl ="\
            file://0001-Mark-one-of-strerror_r-implementation-glibc-specific.patch \
            file://0002-Fix-default-stack-size-to-256K.patch \
            file://0004-wiredtiger-Disable-strtouq-on-musl.patch \
            "
 
-SRC_URI:append:toolchain-clang = "\
+SRC_URI_append_toolchain-clang = "\
            file://0001-asio-Dont-use-experimental-with-clang.patch \
            "
-
 
 S = "${WORKDIR}/git"
 
@@ -51,78 +42,35 @@ COMPATIBLE_HOST ?= '(x86_64|i.86|powerpc64|arm|aarch64).*-linux'
 PACKAGECONFIG ??= "tcmalloc system-pcre"
 # gperftools compilation fails for arm below v7 because of missing support of
 # dmb operation. So we use system-allocator instead of tcmalloc
-PACKAGECONFIG:remove:armv6 = "tcmalloc"
-PACKAGECONFIG:remove:libc-musl = "tcmalloc"
-PACKAGECONFIG:remove:riscv64 = "tcmalloc"
-PACKAGECONFIG:remove:riscv32 = "tcmalloc"
+PACKAGECONFIG_remove_armv6 = "tcmalloc"
+PACKAGECONFIG_remove_libc-musl = "tcmalloc"
+PACKAGECONFIG_remove_riscv64 = "tcmalloc"
+PACKAGECONFIG_remove_riscv32 = "tcmalloc"
 
 PACKAGECONFIG[tcmalloc] = "--use-system-tcmalloc,--allocator=system,gperftools,"
 PACKAGECONFIG[shell] = ",--js-engine=none,,"
 PACKAGECONFIG[system-pcre] = "--use-system-pcre,,libpcre,"
 
-MONGO_ARCH ?= "${HOST_ARCH}"
-MONGO_ARCH:powerpc64le = "ppc64le"
-WIREDTIGER ?= "off"
-WIREDTIGER:x86-64 = "on"
-WIREDTIGER:aarch64 = "on"
-
-EXTRA_OESCONS = "PREFIX=${prefix} \
-                 DESTDIR=${D} \
+EXTRA_OESCONS = "--prefix=${D}${prefix} \
                  LIBPATH=${STAGING_LIBDIR} \
                  LINKFLAGS='${LDFLAGS}' \
                  CXXFLAGS='${CXXFLAGS}' \
-                 TARGET_ARCH=${MONGO_ARCH} \
-                 MONGO_VERSION=${PV} \
-                 OBJCOPY=${OBJCOPY} \
+                 TARGET_ARCH=${TARGET_ARCH} \
                  --ssl \
                  --disable-warnings-as-errors \
                  --use-system-zlib \
                  --nostrip \
                  --endian=${@oe.utils.conditional('SITEINFO_ENDIANNESS', 'le', 'little', 'big', d)} \
-                 --wiredtiger='${WIREDTIGER}' \
-                 --separate-debug \
-                 ${PACKAGECONFIG_CONFARGS}"
-
-
-USERADD_PACKAGES = "${PN}"
-USERADD_PARAM:${PN} = "--system --no-create-home --home-dir /var/run/${BPN} --shell /bin/false --user-group ${BPN}"
-
+                 --wiredtiger=${@['off','on'][d.getVar('SITEINFO_BITS') != '32']} \
+                 ${PACKAGECONFIG_CONFARGS} \
+                 core"
 
 scons_do_compile() {
-        ${STAGING_BINDIR_NATIVE}/scons ${PARALLEL_MAKE} ${EXTRA_OESCONS} install-core || \
+        ${STAGING_BINDIR_NATIVE}/scons ${PARALLEL_MAKE} ${EXTRA_OESCONS} || \
         die "scons build execution failed."
 }
 
 scons_do_install() {
-        # install binaries
-        install -d ${D}${bindir}
-        for i in mongod mongos mongo
-        do
-            if [ -f ${B}/build/opt/mongo/${i} ]
-            then
-                install -m 0755 ${B}/build/opt/mongo/${i} ${D}${bindir}/${i}
-            else
-                bbnote "${i} does not exist"
-            fi
-        done
-
-        # install config
-        install -d ${D}${sysconfdir}
-        install -m 0644 ${S}/debian/mongod.conf ${D}${sysconfdir}/
-
-        # install systemd service
-        install -d ${D}${systemd_system_unitdir}
-        install -m 0644 ${S}/debian/mongod.service ${D}${systemd_system_unitdir}
-
-        # install mongo data folder
-        install -m 755 -d ${D}${localstatedir}/lib/${BPN}
-        chown ${PN}:${PN} ${D}${localstatedir}/lib/${BPN}
-
-        # Log files
-        install -m 755 -d ${D}${localstatedir}/log/${BPN}
-        chown ${PN}:${PN} ${D}${localstatedir}/log/${BPN}
+        ${STAGING_BINDIR_NATIVE}/scons install ${EXTRA_OESCONS}|| \
+        die "scons install execution failed."
 }
-
-CONFFILES:${PN} = "${sysconfdir}/mongod.conf"
-
-SYSTEMD_SERVICE:${PN} = "mongod.service"

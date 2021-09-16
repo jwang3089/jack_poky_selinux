@@ -21,7 +21,7 @@ do_install() {
     oe_runmake install
 }
 
-RDEPENDS:${PN} = "\
+RDEPENDS_${PN} = "\
     perl \
     perl-module-exporter-heavy \
     perl-module-getopt-long \

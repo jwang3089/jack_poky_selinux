@@ -6,7 +6,7 @@ inherit packagegroup
 # that wants mpd which does
 LICENSE_FLAGS = "commercial"
 
-RDEPENDS:${PN} = " \
+RDEPENDS_${PN} = " \
     parole \
     xfmpc \
     xfce4-mpc-plugin \

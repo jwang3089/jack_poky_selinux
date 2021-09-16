@@ -9,10 +9,7 @@ SECTION = "libs"
 
 DEPENDS = "curl jsoncpp libmicrohttpd hiredis"
 
-SRC_URI = "git://github.com/cinemast/libjson-rpc-cpp \
-	   file://0001-Fix-build-with-libmicrohttpd.patch \
-"
-
+SRC_URI = "git://github.com/cinemast/libjson-rpc-cpp"
 SRCREV = "c696f6932113b81cd20cd4a34fdb1808e773f23e"
 
 S = "${WORKDIR}/git"
@@ -27,4 +24,4 @@ EXTRA_OECMAKE += "-DCOMPILE_TESTS=NO -DCOMPILE_STUBGEN=NO -DCOMPILE_EXAMPLES=NO 
                   -DCMAKE_LIBRARY_PATH=${libdir} \
 "
 
-FILES:${PN}-dev += "${libdir}/libjson-rpc-cpp/cmake"
+FILES_${PN}-dev += "${libdir}/libjson-rpc-cpp/cmake"

@@ -1,20 +1,20 @@
-RDEPENDS:packagegroup-meta-oe-devtools += "\
+RDEPENDS_packagegroup-meta-oe-devtools += "\
     python3-distutils-extra \
     rwmem \
     speedtest-cli \
     mongodb \
 "
 
-RDEPENDS:packagegroup-meta-oe-connectivity += "\
+RDEPENDS_packagegroup-meta-oe-connectivity += "\
     lirc \
 "
 
-RDEPENDS:packagegroup-meta-oe-extended += "\
+RDEPENDS_packagegroup-meta-oe-extended += "\
     lcdproc \
     mozjs \
 "
-RDEPENDS:packagegroup-meta-oe-support += "\
+RDEPENDS_packagegroup-meta-oe-support += "\
     smem \
 "
-RDEPENDS:packagegroup-meta-oe-extended:remove:libc-musl = "lcdproc"
+RDEPENDS_packagegroup-meta-oe-extended_remove_libc-musl = "lcdproc"
 

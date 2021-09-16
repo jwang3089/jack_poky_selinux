@@ -17,9 +17,8 @@ S = "${WORKDIR}/git"
 
 PACKAGECONFIG ??= "instrumentation"
 
-PACKAGECONFIG:remove:mipsarch = "instrumentation"
-PACKAGECONFIG:remove:powerpc = "instrumentation"
-PACKAGECONFIG:remove:riscv32 = "instrumentation"
+PACKAGECONFIG_remove_mipsarch = "instrumentation"
+PACKAGECONFIG_remove_powerpc = "instrumentation"
 
 PACKAGECONFIG[instrumentation] = "--enable-instrumentation,--disable-instrumentation,"
 
@@ -27,6 +26,6 @@ inherit autotools pkgconfig
 
 EXTRA_OECONF = "--with-zlib=${STAGING_EXECPREFIXDIR}"
 
-do_configure:prepend() {
+do_configure_prepend() {
     (cd ${S}; ./autogen.sh; cd -)
 }

@@ -24,7 +24,7 @@ S = "${WORKDIR}/Import-Into-${PV}"
 
 inherit cpan
 
-RDEPENDS:${PN} = " libmodule-runtime-perl \
+RDEPENDS_${PN} = " libmodule-runtime-perl \
                    perl-module-strict \
                    perl-module-warnings \
 "

@@ -18,4 +18,4 @@ PACKAGECONFIG ?= "curl"
 
 PACKAGECONFIG[curl] = ",--without-curl,curl"
 
-FILES:${PN} += "${datadir}/proj"
+FILES_${PN} += "${datadir}/proj"

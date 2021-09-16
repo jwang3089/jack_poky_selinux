@@ -16,11 +16,11 @@ inherit autotools
 PACKAGES += "${BPN}-ckport"
 PACKAGES_DYNAMIC += "^${BPN}-plugin-.*"
 
-do_install:append () {
+do_install_append () {
     find "${D}" -name '*.la' -exec rm -f {} +
 }
 
-python populate_packages:prepend () {
+python populate_packages_prepend () {
     rootdir = bb.data.expand('${libdir}/ao/plugins-4', d)
     rootdir_dbg = bb.data.expand('${libdir}/ao/plugins-4/.debug', d)
     do_split_packages(d, rootdir, '^(.*)\.so$', output_pattern='${BPN}-plugin-%s', description='AO %s plugin')
@@ -30,4 +30,4 @@ python populate_packages:prepend () {
 PACKAGECONFIG ?= "${@bb.utils.filter('DISTRO_FEATURES', 'alsa pulseaudio', d)}"
 PACKAGECONFIG[alsa] = "--enable-alsa,--disable-alsa,alsa-lib"
 PACKAGECONFIG[pulseaudio] = "--enable-pulse,--disable-pulse,pulseaudio"
-FILES:${BPN}-ckport = "${libdir}/ckport"
+FILES_${BPN}-ckport = "${libdir}/ckport"

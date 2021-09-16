@@ -14,14 +14,14 @@ inherit features_check setuptools3 pkgconfig gtk-icon-cache gsettings mime-xdg
 
 REQUIRED_DISTRO_FEATURES = "x11"
 
-FILES:${PN} += " \
+FILES_${PN} += " \
     ${datadir}/dbus-1 \
     ${datadir}/icons \
     ${datadir}/gnome-shell \
     ${datadir}/help \
 "
 
-RDEPENDS:${PN} += " \
+RDEPENDS_${PN} += " \
     ncurses \
     python3-dbus \
     python3-pycairo \

@@ -14,7 +14,7 @@ SRC_URI += " \
 	file://run-ptest \
 "
 
-RDEPENDS:${PN}-ptest += " \
+RDEPENDS_${PN}-ptest += " \
 	${PYTHON_PN}-pytest \
 "
 

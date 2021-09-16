@@ -12,7 +12,7 @@ SRC_URI = "ftp://ftp.invisible-island.net/byacc/byacc-${PV}.tgz \
 
 EXTRA_OECONF += "--program-transform-name='s,^,b,'"
 
-BBCLASSEXTEND = "native nativesdk"
+BBCLASSEXTEND = "native"
 
 inherit autotools
 

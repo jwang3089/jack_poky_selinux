@@ -32,12 +32,12 @@ inherit autotools gtk-doc pkgconfig update-alternatives gtk-immodules-cache gobj
 
 PACKAGES += "libgail gtk-demo"
 
-FILES:${PN} += "${bindir}/gtk-update-icon-cache-2.0 \
+FILES_${PN} += "${bindir}/gtk-update-icon-cache-2.0 \
 	${bindir}/gtk-query-immodules-2.0 \
 	${datadir}/themes ${sysconfdir} \
 	${libdir}/gtk-2.0/${LIBV}/engines/libpixmap.so"
 
-FILES:${PN}-dev += " \
+FILES_${PN}-dev += " \
         ${datadir}/gtk-2.0/include \
 	${libdir}/gtk-2.0/include \
 	${libdir}/gtk-2.0/modules/*.la \
@@ -47,12 +47,12 @@ FILES:${PN}-dev += " \
 	${libdir}/gtk-2.0/${LIBV}/engines/*.la \
 	${bindir}/gtk-builder-convert"
 
-FILES:gtk-demo = " \
+FILES_gtk-demo = " \
  ${datadir}/gtk-2.0/demo/* \
  ${bindir}/gtk-demo \
  "
 
-FILES:libgail = " \
+FILES_libgail = " \
 	${libdir}/gtk-2.0/modules/libgail.so \
 	${libdir}/gtk-2.0/modules/libferret.so \
 	"
@@ -67,13 +67,13 @@ GTKBASE_RRECOMMENDS ?= "liberation-fonts \
                         "
 GTKGLIBC_RRECOMMENDS ?= "${GTKBASE_RRECOMMENDS} glibc-gconv-iso8859-1"
 
-RRECOMMENDS:${PN} = "${GTKBASE_RRECOMMENDS}"
-RRECOMMENDS:${PN}:libc-glibc = "${GTKGLIBC_RRECOMMENDS}"
+RRECOMMENDS_${PN} = "${GTKBASE_RRECOMMENDS}"
+RRECOMMENDS_${PN}_libc-glibc = "${GTKGLIBC_RRECOMMENDS}"
 
-ALTERNATIVE:${PN} = "gtk-update-icon-cache"
+ALTERNATIVE_${PN} = "gtk-update-icon-cache"
 ALTERNATIVE_TARGET[gtk-update-icon-cache] = "${bindir}/gtk-update-icon-cache-2.0"
 
-do_compile:prepend() {
+do_compile_prepend() {
         export GIR_EXTRA_LIBS_PATH="${B}/gdk/.libs"
 }
 

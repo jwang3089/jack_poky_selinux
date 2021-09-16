@@ -19,4 +19,4 @@ do_install() {
     cp -rf ${WORKDIR}/ucd ${D}${datadir}/unicode
 }
 
-FILES:${PN} = "${datadir}/unicode/ucd"
+FILES_${PN} = "${datadir}/unicode/ucd"

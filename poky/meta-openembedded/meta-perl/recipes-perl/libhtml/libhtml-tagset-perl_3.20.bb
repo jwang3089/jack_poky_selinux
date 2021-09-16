@@ -17,11 +17,11 @@ S = "${WORKDIR}/HTML-Tagset-${PV}"
 inherit cpan ptest-perl
 
 
-RDEPENDS:${PN} += "perl-module-strict perl-module-vars"
+RDEPENDS_${PN} += "perl-module-strict perl-module-vars"
 
-RDEPENDS:${PN}-ptest += "perl-module-test"
+RDEPENDS_${PN}-ptest += "perl-module-test"
 
-do_install:prepend() {
+do_install_prepend() {
     # requires "-T" (taint) command line option
     rm -rf ${B}/t/pod.t
 }

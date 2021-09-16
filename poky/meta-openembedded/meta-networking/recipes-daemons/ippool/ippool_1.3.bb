@@ -36,7 +36,7 @@ SRC_URI[sha256sum] = "d3eab7d6cad5da8ccc9d1e31d5303e27a39622c07bdb8fa3618eea3144
 inherit systemd
 
 DEPENDS = "readline ppp ncurses gzip-native rpcsvc-proto-native libtirpc"
-RDEPENDS:${PN} = "rpcbind"
+RDEPENDS_${PN} = "rpcbind"
 
 EXTRA_OEMAKE = "CC='${CC}' AS='${AS}' LD='${LD}' AR='${AR}' NM='${NM}' STRIP='${STRIP}'"
 EXTRA_OEMAKE += "PPPD_VERSION=${PPPD_VERSION} SYS_LIBDIR=${libdir}"
@@ -45,11 +45,11 @@ EXTRA_OEMAKE += "IPPOOL_TEST=y"
 
 CPPFLAGS += "${SELECTED_OPTIMIZATION} -I${STAGING_INCDIR}/tirpc"
 
-SYSTEMD_SERVICE:${PN} = "ippool.service"
+SYSTEMD_SERVICE_${PN} = "ippool.service"
 SYSTEMD_AUTO_ENABLE = "disable"
 
 
-do_compile:prepend() {
+do_compile_prepend() {
     # fix the CFLAGS= and CPPFLAGS= in main Makefile, to have the extra CFLAGS in env
     sed -i -e "s/^CFLAGS=/CFLAGS+=/" ${S}/Makefile
     sed -i -e "s/^CPPFLAGS=/CPPFLAGS+=/" ${S}/Makefile
@@ -79,12 +79,12 @@ do_install() {
 
 PACKAGES =+ "${PN}-test"
 
-FILES:${PN} += "${libdir}/pppd/${PPPD_VERSION}/ippool.so"
-FILES:${PN}-dbg += "${libdir}/pppd/${PPPD_VERSION}/.debug/ippool.so"
-FILES:${PN}-test = "/opt/${BPN}"
+FILES_${PN} += "${libdir}/pppd/${PPPD_VERSION}/ippool.so"
+FILES_${PN}-dbg += "${libdir}/pppd/${PPPD_VERSION}/.debug/ippool.so"
+FILES_${PN}-test = "/opt/${BPN}"
 
 # needs tcl to run tests
-RDEPENDS:${PN}-test += "tcl ${BPN}"
+RDEPENDS_${PN}-test += "tcl ${BPN}"
 
 PPPD_VERSION="${@get_ppp_version(d)}"
 

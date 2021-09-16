@@ -29,4 +29,4 @@ do_install() {
     install -m 644 ${WORKDIR}/options.pptp ${D}${sysconfdir}/ppp
 }
 
-RDEPENDS:${PN} = "ppp"
+RDEPENDS_${PN} = "ppp"

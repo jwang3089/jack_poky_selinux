@@ -44,7 +44,7 @@ inherit autotools gettext update-alternatives pkgconfig python3native perlnative
 # depends on virtual/libx11
 REQUIRED_DISTRO_FEATURES = "x11"
 
-ALTERNATIVE:${PN} = "x-window-manager"
+ALTERNATIVE_${PN} = "x-window-manager"
 ALTERNATIVE_TARGET[x-window-manager] = "${bindir}/fvwm"
 ALTERNATIVE_PRIORITY[x-window-manager] = "20"
 
@@ -76,7 +76,7 @@ EXTRA_OEMAKE = " \
     V=1 \
 "
 
-do_install:append() {
+do_install_append() {
     install -d -m 0755 ${D}/${sysconfdir}/xdg/fvwm
     # You can install the config file here
 
@@ -97,25 +97,26 @@ PACKAGES = " \
 "
 
 # minimal set of binaries
-FILES:${PN} = " \
+FILES_${PN} = " \
     ${bindir}/fvwm \
     ${bindir}/fvwm-root \
     ${datadir}/fvwm/ConfigFvwmDefaults \
 "
 
-FILES:${PN}-extra = " \
+FILES_${PN}-extra = " \
     ${bindir} \
     ${libexecdir} \
     ${sysconfdir}/xdg/fvwm \
 "
-FILES:${PN}-doc = " \
+FILES_${PN}-doc = " \
     ${mandir} \
     ${datadir}/fvwm \
 "
-RDEPENDS:${PN} = " \
+
+RDEPENDS_${PN} = " \
     xuser-account \
 "
-RDEPENDS:${PN}-extra += "\
+RDEPENDS_${PN}-extra += "\
     perl \
     python3-core \
 "

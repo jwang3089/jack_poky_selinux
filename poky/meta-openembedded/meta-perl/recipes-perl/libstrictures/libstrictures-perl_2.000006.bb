@@ -36,13 +36,13 @@ S = "${WORKDIR}/strictures-${PV}"
 
 inherit cpan ptest-perl
 
-RDEPENDS:${PN} += " \
+RDEPENDS_${PN} += " \
     perl-module-carp \
     perl-module-strict \
     perl-module-test-more \
     perl-module-warnings \
 "
 
-RDEPENDS:${PN}-ptest += "perl-module-perlio perl-module-perlio-scalar"
+RDEPENDS_${PN}-ptest += "perl-module-perlio perl-module-perlio-scalar"
 
 BBCLASSEXTEND = "native"

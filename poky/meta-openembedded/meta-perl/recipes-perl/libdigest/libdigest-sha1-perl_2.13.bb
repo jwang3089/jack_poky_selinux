@@ -22,4 +22,4 @@ do_install_ptest () {
 
 BBCLASSEXTEND="native"
 
-FILES:${PN}-dbg =+ "${libdir}/perl/vendor_perl/*/auto/Digest/SHA1/.debug/"
+FILES_${PN}-dbg =+ "${libdir}/perl/vendor_perl/*/auto/Digest/SHA1/.debug/"

@@ -18,9 +18,9 @@ PACKAGECONFIG[systemd] = ",,systemd"
 
 INITSCRIPT_NAME = "triggerhappy"
 INITSCRIPT_PARAMS = "defaults"
-SYSTEMD_SERVICE:${PN} = "triggerhappy.service triggerhappy.socket"
+SYSTEMD_SERVICE_${PN} = "triggerhappy.service triggerhappy.socket"
 
-FILES:${PN} = "\
+FILES_${PN} = "\
     ${sbindir}/thd \
     ${sbindir}/th-cmd \
     ${sysconfdir}/triggerhappy/triggers.d \
@@ -28,9 +28,9 @@ FILES:${PN} = "\
     ${sysconfdir}/init.d/triggerhappy \
     ${systemd_unitdir}/system \
 "
-CONFFILES:${PN} = "${sysconfdir}/udev/rules.d/80-triggerhappy.rules"
+CONFFILES_${PN} = "${sysconfdir}/udev/rules.d/80-triggerhappy.rules"
 
-do_install:append() {
+do_install_append() {
     install -d ${D}${sysconfdir}/triggerhappy/triggers.d
 
     install -d ${D}${nonarch_base_libdir}/udev/rules.d

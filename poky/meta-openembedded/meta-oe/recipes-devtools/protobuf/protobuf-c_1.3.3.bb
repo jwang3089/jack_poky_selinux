@@ -20,6 +20,10 @@ SRC_URI = "git://github.com/protobuf-c/protobuf-c.git \
 
 S = "${WORKDIR}/git"
 
+#make sure c++11 is used
+CXXFLAGS += "-std=c++11"
+BUILD_CXXFLAGS += "-std=c++11"
+
 inherit autotools pkgconfig
 
 # After several fix attempts there is still a race between generating
@@ -29,9 +33,9 @@ PARALLEL_MAKE = ""
 
 PACKAGE_BEFORE_PN = "${PN}-compiler"
 
-FILES:${PN}-compiler = "${bindir}"
+FILES_${PN}-compiler = "${bindir}"
 
-RDEPENDS:${PN}-compiler = "protobuf-compiler"
-RDEPENDS:${PN}-dev += "${PN}-compiler"
+RDEPENDS_${PN}-compiler = "protobuf-compiler"
+RDEPENDS_${PN}-dev += "${PN}-compiler"
 
 BBCLASSEXTEND = "native nativesdk"

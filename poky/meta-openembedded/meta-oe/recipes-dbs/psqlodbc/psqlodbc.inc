@@ -44,7 +44,7 @@ do_install_ptest() {
     sed -i -e 's|@LIBDIR@|${libdir}|' ${D}${PTEST_PATH}/odbcini-gen.sh
 }
 
-FILES:${PN} += "${libdir}"
+FILES_${PN} += "${libdir}"
 
 # The tests need a local PostgreSQL server running
-RDEPENDS:${PN}-ptest = "postgresql"
+RDEPENDS_${PN}-ptest = "postgresql"

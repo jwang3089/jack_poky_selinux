@@ -14,6 +14,6 @@ inherit pypi setuptools3
 
 S = "${WORKDIR}/pydbus-${PV}"
 
-RDEPENDS:${PN} = "${PYTHON_PN}-pygobject \
+RDEPENDS_${PN} = "${PYTHON_PN}-pygobject \
                   ${PYTHON_PN}-io \
                   ${PYTHON_PN}-logging"

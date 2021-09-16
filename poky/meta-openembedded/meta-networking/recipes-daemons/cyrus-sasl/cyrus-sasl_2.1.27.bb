@@ -29,7 +29,7 @@ EXTRA_OECONF += "--with-dblib=berkeley \
                  --with-plugindir='${libdir}/sasl2' \
                  andrew_cv_runpath_switch=none"
 
-PACKAGECONFIG ??= "\
+PACKAGECONFIG ??= "ntlm \
     ${@bb.utils.filter('DISTRO_FEATURES', 'ldap pam', d)} \
 "
 PACKAGECONFIG[gssapi] = "--enable-gssapi=yes,--enable-gssapi=no,krb5,"
@@ -41,7 +41,7 @@ PACKAGECONFIG[ntlm] = "--enable-ntlm=yes,--enable-ntlm=no,,"
 
 CFLAGS += "-fPIC"
 
-do_configure:prepend () {
+do_configure_prepend () {
     # make it be able to work with db 5.0 version
     local sed_files="sasldb/db_berkeley.c utils/dbconverter-2.c"
     for sed_file in $sed_files; do
@@ -49,14 +49,14 @@ do_configure:prepend () {
     done
 }
 
-do_compile:prepend () {
+do_compile_prepend () {
     cd include
     ${BUILD_CC} ${BUILD_CFLAGS} ${BUILD_LDFLAGS} ${S}/include/makemd5.c -o makemd5
     touch makemd5.o makemd5.lo makemd5
     cd ..
 }
 
-do_install:append() {
+do_install_append() {
     if ${@bb.utils.contains('DISTRO_FEATURES','systemd','true','false',d)}; then
         install -d ${D}${systemd_unitdir}/system
         install -m 0644 ${WORKDIR}/saslauthd.service ${D}${systemd_unitdir}/system
@@ -75,10 +75,10 @@ do_install:append() {
 }
 
 USERADD_PACKAGES = "${PN}-bin"
-USERADD_PARAM:${PN}-bin = "--system --home=/var/spool/mail -g mail cyrus"
+USERADD_PARAM_${PN}-bin = "--system --home=/var/spool/mail -g mail cyrus"
 
 SYSTEMD_PACKAGES = "${PN}-bin"
-SYSTEMD_SERVICE:${PN}-bin = "saslauthd.service"
+SYSTEMD_SERVICE_${PN}-bin = "saslauthd.service"
 SYSTEMD_AUTO_ENABLE = "disable"
 
 SRC_URI[md5sum] = "a7f4e5e559a0e37b3ffc438c9456e425"
@@ -86,16 +86,16 @@ SRC_URI[sha256sum] = "8fbc5136512b59bb793657f36fadda6359cae3b08f01fd16b3d406f134
 
 PACKAGES =+ "${PN}-bin"
 
-FILES:${PN}           += "${libdir}/sasl2/*.so*"
-FILES:${PN}-bin       += "${bindir} \
+FILES_${PN}           += "${libdir}/sasl2/*.so*"
+FILES_${PN}-bin       += "${bindir} \
                           ${sysconfdir}/default/saslauthd \
                           ${systemd_unitdir}/system/saslauthd.service \
                           ${sysconfdir}/tmpfiles.d/saslauthd.conf"
-FILES:${PN}-dev       += "${libdir}/sasl2/*.la"
-FILES:${PN}-dbg       += "${libdir}/sasl2/.debug"
-FILES:${PN}-staticdev += "${libdir}/sasl2/*.a"
+FILES_${PN}-dev       += "${libdir}/sasl2/*.la"
+FILES_${PN}-dbg       += "${libdir}/sasl2/.debug"
+FILES_${PN}-staticdev += "${libdir}/sasl2/*.a"
 
-INSANE_SKIP:${PN} += "dev-so"
+INSANE_SKIP_${PN} += "dev-so"
 
 # CVE-2020-8032 affects only openSUSE
 CVE_CHECK_WHITELIST += "CVE-2020-8032"

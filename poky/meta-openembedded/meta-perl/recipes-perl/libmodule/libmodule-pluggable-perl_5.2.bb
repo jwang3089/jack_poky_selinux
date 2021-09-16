@@ -30,7 +30,7 @@ S = "${WORKDIR}/${SRCNAME}-${PV}"
 
 inherit cpan
 
-RDEPENDS:${PN} = " perl-module-base \
+RDEPENDS_${PN} = " perl-module-base \
     perl-module-deprecate \
     perl-module-file-basename \
     perl-module-file-find \

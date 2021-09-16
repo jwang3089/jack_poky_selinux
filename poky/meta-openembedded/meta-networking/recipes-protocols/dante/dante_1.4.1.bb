@@ -36,14 +36,14 @@ PACKAGECONFIG[krb5] = ",--without-krb5,krb5"
 
 PACKAGECONFIG ??= ""
 
-do_install:append() {
+do_install_append() {
     install -d ${D}${sysconfdir}
     cp ${S}/example/sock[sd].conf ${D}${sysconfdir}
 }
 
 PACKAGES =+ "${PN}-sockd ${PN}-libdsocks "
 
-FILES:${PN}-libdsocks = "${libdir}/libdsocks.so"
-FILES:${PN}-sockd = "${bindir}/sockd ${sysconfdir}/sockd.conf"
+FILES_${PN}-libdsocks = "${libdir}/libdsocks.so"
+FILES_${PN}-sockd = "${bindir}/sockd ${sysconfdir}/sockd.conf"
 
-INSANE_SKIP:${PN}-libdsocks = "dev-elf"
+INSANE_SKIP_${PN}-libdsocks = "dev-elf"

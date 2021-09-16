@@ -17,6 +17,8 @@ Signed-off-by: Mingli Yu <mingli.yu@windriver.com>
  Makefile | 45 +++++++++++++++++++++++----------------------
  1 file changed, 23 insertions(+), 22 deletions(-)
 
+diff --git a/Makefile b/Makefile
+index 1fdb628..5dce589 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -8,12 +8,6 @@ ifeq ($(strip $CC),)
@@ -77,14 +79,14 @@ Signed-off-by: Mingli Yu <mingli.yu@windriver.com>
 +              -DRELEASE_DATE='"$(DATE)"'
 +
  SRC_BASE = makedumpfile.c makedumpfile.h diskdump_mod.h sadump_mod.h sadump_info.h
- SRC_PART = print_info.c dwarf_info.c elf_info.c erase_info.c sadump_info.c cache.c tools.c printk.c
+ SRC_PART = print_info.c dwarf_info.c elf_info.c erase_info.c sadump_info.c cache.c tools.c
  OBJ_PART=$(patsubst %.c,%.o,$(SRC_PART))
-@@ -52,12 +53,12 @@ OBJ_ARCH=$(patsubst %.c,%.o,$(SRC_ARCH))
+@@ -52,17 +53,17 @@ OBJ_ARCH=$(patsubst %.c,%.o,$(SRC_ARCH))
  
  LIBS = -ldw -lbz2 -ldl -lelf -lz
  ifneq ($(LINKTYPE), dynamic)
--LIBS := -static $(LIBS) -llzma
-+LIBS := $(LIBS) -llzma
+-LIBS := -static $(LIBS)
++LIBS := $(LIBS)
  endif
  
  ifeq ($(USELZO), on)
@@ -94,16 +96,13 @@ Signed-off-by: Mingli Yu <mingli.yu@windriver.com>
  endif
  
  ifeq ($(USESNAPPY), on)
-@@ -65,7 +66,7 @@ LIBS := -lsnappy $(LIBS)
- ifneq ($(LINKTYPE), dynamic)
- LIBS := $(LIBS) -lstdc++
- endif
+ LIBS := -lsnappy $(LIBS)
 -CFLAGS += -DUSESNAPPY
 +CFLAGS_COMMON += -DUSESNAPPY
  endif
  
- LIBS := $(LIBS) -lpthread
-@@ -90,14 +91,14 @@ LIBS := $(LIBS) $(call try-run,\
+ LIBS := -lpthread $(LIBS)
+@@ -87,14 +88,14 @@ LIBS := $(LIBS) $(call try-run,\
  all: makedumpfile
  
  $(OBJ_PART): $(SRC_PART)
@@ -120,7 +119,7 @@ Signed-off-by: Mingli Yu <mingli.yu@windriver.com>
  	echo .TH MAKEDUMPFILE 8 \"$(DATE)\" \"makedumpfile v$(VERSION)\" \"Linux System Administrator\'s Manual\" > temp.8
  	grep -v "^.TH MAKEDUMPFILE 8" $(VPATH)makedumpfile.8 >> temp.8
  	mv temp.8 makedumpfile.8
-@@ -108,7 +109,7 @@ makedumpfile: $(SRC_BASE) $(OBJ_PART) $(
+@@ -105,7 +106,7 @@ makedumpfile: $(SRC_BASE) $(OBJ_PART) $(OBJ_ARCH)
  	gzip -c ./makedumpfile.conf.5 > ./makedumpfile.conf.5.gz
  
  eppic_makedumpfile.so: extension_eppic.c
@@ -129,3 +128,6 @@ Signed-off-by: Mingli Yu <mingli.yu@windriver.com>
  
  clean:
  	rm -f $(OBJ) $(OBJ_PART) $(OBJ_ARCH) makedumpfile makedumpfile.8.gz makedumpfile.conf.5.gz
+-- 
+2.21.0
+

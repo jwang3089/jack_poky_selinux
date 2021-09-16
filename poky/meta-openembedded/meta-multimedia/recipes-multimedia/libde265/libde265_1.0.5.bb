@@ -16,4 +16,4 @@ EXTRA_OECONF = "--disable-sherlock265 --disable-dec265"
 inherit autotools-brokensep pkgconfig
 
 PACKAGES =+ "${PN}-tools"
-FILES:${PN}-tools = "${bindir}/*"
+FILES_${PN}-tools = "${bindir}/*"

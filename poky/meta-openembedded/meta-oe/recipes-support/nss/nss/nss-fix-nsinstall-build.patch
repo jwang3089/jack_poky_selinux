@@ -1,7 +1,4 @@
-From 2701905e689cf7c1ee7ca2d116f20b5bbc146431 Mon Sep 17 00:00:00 2001
-From: Wenzong Fan <wenzong.fan@windriver.com>
-Date: Sat, 7 Mar 2020 08:34:02 -0800
-Subject: [PATCH] Fix nss multilib build on openSUSE 11.x 32bit
+Fix nss multilib build on openSUSE 11.x 32bit
 
 While building lib64-nss on openSUSE 11.x 32bit, the nsinstall will
 fail with error:
@@ -15,19 +12,14 @@ on host to install built files, it doesn't need any cross-compling or
 multilib build options. Just clean the ARCHFLAG and LDFLAGS to fix this
 error.
 
-Upstream-Status: Inappropriate [configuration]
+Upstream-Status: Pending
 
 Signed-off-by: Wenzong Fan <wenzong.fan@windriver.com>
 ===================================================
-
----
- nss/coreconf/nsinstall/Makefile | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/nss/coreconf/nsinstall/Makefile b/nss/coreconf/nsinstall/Makefile
-index 08dfbc2..e97fb5f 100644
---- a/nss/coreconf/nsinstall/Makefile
-+++ b/nss/coreconf/nsinstall/Makefile
+Index: nss-3.24/nss/coreconf/nsinstall/Makefile
+===================================================================
+--- nss-3.24.orig/nss/coreconf/nsinstall/Makefile
++++ nss-3.24/nss/coreconf/nsinstall/Makefile
 @@ -18,6 +18,13 @@ INTERNAL_TOOLS  = 1
  
  include $(DEPTH)/coreconf/config.mk
@@ -41,4 +33,4 @@ index 08dfbc2..e97fb5f 100644
 +
  ifeq (,$(filter-out OS2 WIN%,$(OS_TARGET)))
  PROGRAM		=
- TARGETS		=
+ else

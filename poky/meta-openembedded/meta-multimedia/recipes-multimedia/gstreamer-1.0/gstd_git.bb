@@ -19,7 +19,7 @@ PV = "1.0+really0.8.0"
 
 inherit autotools pkgconfig gettext gtk-doc
 
-do_install:append() {
+do_install_append() {
         rm -fr ${D}${localstatedir}/run ${D}/run ${D}${bindir}/gst-client ${D}${bindir}/gstd-client
         if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
                 install -d ${D}${sysconfdir}/tmpfiles.d

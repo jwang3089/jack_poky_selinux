@@ -20,4 +20,4 @@ EXTRA_OECONF = "\
     --with-bz2 \
 "
 
-FILES:${PN} += "${datadir}/thumbnailers"
+FILES_${PN} += "${datadir}/thumbnailers"

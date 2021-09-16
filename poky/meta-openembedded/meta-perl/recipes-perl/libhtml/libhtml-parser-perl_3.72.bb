@@ -23,7 +23,7 @@ do_compile() {
     cpan_do_compile
 }
 
-RDEPENDS:${PN} += "\
+RDEPENDS_${PN} += "\
     perl-module-exporter \
     perl-module-strict \
     perl-module-vars \
@@ -31,7 +31,7 @@ RDEPENDS:${PN} += "\
     libhtml-tagset-perl \
 "
 
-RDEPENDS:${PN}-ptest += "\
+RDEPENDS_${PN}-ptest += "\
     liburi-perl \
     perl-module-config \
     perl-module-file-spec \

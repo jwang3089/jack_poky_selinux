@@ -24,14 +24,14 @@ S = "${WORKDIR}/${CPAN_PACKAGE}-${PV}"
 
 inherit cpan ptest-perl
 
-RDEPENDS:${PN} += " \
+RDEPENDS_${PN} += " \
     perl-module-carp \
     perl-module-constant \
     perl-module-strict \
     perl-module-warnings \
 "
 
-RDEPENDS:${PN}-ptest += " \
+RDEPENDS_${PN}-ptest += " \
     perl-module-cpan \
     perl-module-exporter \
     perl-module-extutils-makemaker \

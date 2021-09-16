@@ -21,18 +21,16 @@ S = "${WORKDIR}/HTML-Tree-${PV}"
 
 inherit cpan_build
 
-export PERL_USE_UNSAFE_INC = "1"
-
 DEPENDS += "libmodule-build-perl-native \
 "
 
-RPROVIDES:${PN} = " libhtml-element-perl \
+RPROVIDES_${PN} = " libhtml-element-perl \
     libhtml-tree-assubs-perl \
     libhtml-tree-perl \
     libhtml-treebuilder-perl \
 "
 
-RDEPENDS:${PN} = " perl-module-b \
+RDEPENDS_${PN} = " perl-module-b \
     perl-module-base \
     perl-module-strict \
     perl-module-warnings \

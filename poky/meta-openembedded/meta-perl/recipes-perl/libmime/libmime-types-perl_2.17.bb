@@ -21,15 +21,15 @@ S = "${WORKDIR}/MIME-Types-${PV}"
 
 inherit cpan ptest
 
-RDEPENDS:${PN} = "\
+RDEPENDS_${PN} = "\
     perl-module-base \
     perl-module-file-basename \
     perl-module-file-spec \
     perl-module-overload \
 "
 
-RDEPENDS:${PN}-ptest = "perl-module-lib perl-module-test-more"
-#RSUGGESTS:${PN}-ptest = "libmojo-base-perl"
+RDEPENDS_${PN}-ptest = "perl-module-lib perl-module-test-more"
+#RSUGGESTS_${PN}-ptest = "libmojo-base-perl"
 
 do_install () {
     cpan_do_install

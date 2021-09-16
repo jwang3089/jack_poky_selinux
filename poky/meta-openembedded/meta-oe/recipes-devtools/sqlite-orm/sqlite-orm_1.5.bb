@@ -15,8 +15,8 @@ EXTRA_OECMAKE += "-DSqliteOrm_BuildTests=OFF"
 
 BBCLASSEXTEND = "native nativesdk"
 
-FILES:${PN}-dev += "${libdir}/cmake/${BPN}"
+FILES_${PN}-dev += "${libdir}/cmake/${BPN}"
 
 # Header-only library
-RDEPENDS:${PN}-dev = ""
-RRECOMMENDS:${PN}-dbg = "${PN}-dev (= ${EXTENDPKGV})"
+RDEPENDS_${PN}-dev = ""
+RRECOMMENDS_${PN}-dbg = "${PN}-dev (= ${EXTENDPKGV})"

@@ -13,8 +13,8 @@ inherit autotools pkgconfig
 
 PACKAGES += "${PN}-utils"
 
-FILES:${PN} = "${libdir}/${BPN}${SOLIB}"
-FILES:${PN}-utils = "${bindir}/*"
+FILES_${PN} = "${libdir}/${BPN}${SOLIB}"
+FILES_${PN}-utils = "${bindir}/*"
 
 python libcdio_split_packages() {
     libdir = d.expand('${libdir}')

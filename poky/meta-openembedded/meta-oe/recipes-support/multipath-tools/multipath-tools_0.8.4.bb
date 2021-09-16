@@ -43,11 +43,8 @@ SRC_URI = "git://git.opensvc.com/multipath-tools/.git;protocol=http \
            file://0029-multipath-tools-modify-Makefile.inc-for-cross-compil.patch \
            file://0030-Always-use-devmapper.patch \
            file://0031-Always-use-devmapper-for-kpartx.patch \
-           file://0032-libdmmp-Makefile-replace-perl-with-sed-in-install-ta.patch \
            file://0001-fix-bug-of-do_compile-and-do_install.patch \
            file://0001-add-explicit-dependency-on-libraries.patch \
-           file://0001-fix-boolean-value-with-json-c-0.14.patch \
-           file://0001-libmultipath-uevent.c-fix-error-handling-for-udev_mo.patch \
            "
 
 LIC_FILES_CHKSUM = "file://COPYING;md5=5f30f0716dfdd0d91eb439ebec522ec2"
@@ -58,7 +55,7 @@ S = "${WORKDIR}/git"
 
 inherit systemd pkgconfig
 
-SYSTEMD_SERVICE:${PN} = "multipathd.service"
+SYSTEMD_SERVICE_${PN} = "multipathd.service"
 SYSTEMD_AUTO_ENABLE = "disable"
 
 TARGET_CC_ARCH += "${LDFLAGS}"
@@ -68,8 +65,8 @@ TARGET_CC_ARCH += "${LDFLAGS}"
 # that only works on ARM when thumb is disabled. Otherwise one gets:
 #   Error: shifts in CMP/MOV instructions are only supported in unified syntax -- `mov r12,r12,ror#3'
 #   ../Makefile.inc:66: recipe for target 'debug.o' failed
-ARM_INSTRUCTION_SET:armv4 = "arm"
-ARM_INSTRUCTION_SET:armv5 = "arm"
+ARM_INSTRUCTION_SET_armv4 = "arm"
+ARM_INSTRUCTION_SET_armv5 = "arm"
 
 # The exact version of SYSTEMD does not matter but should be greater than 209.
 #
@@ -100,23 +97,23 @@ do_install() {
     ${D}${sysconfdir}/multipath.conf.example
 }
 
-FILES:${PN}-dbg += "${base_libdir}/multipath/.debug"
+FILES_${PN}-dbg += "${base_libdir}/multipath/.debug"
 
 PACKAGES =+ "${PN}-libs"
-FILES:${PN}-libs = "${base_libdir}/lib*.so.* \
+FILES_${PN}-libs = "${base_libdir}/lib*.so.* \
                     ${base_libdir}/multipath/lib*.so*"
-RDEPENDS:${PN} += "${PN}-libs bash"
+RDEPENDS_${PN} += "${PN}-libs bash"
 
 PROVIDES += "device-mapper-multipath"
-RPROVIDES:${PN} += "device-mapper-multipath"
-RPROVIDES:${PN}-libs += "device-mapper-multipath-libs"
+RPROVIDES_${PN} += "device-mapper-multipath"
+RPROVIDES_${PN}-libs += "device-mapper-multipath-libs"
 
-FILES:${PN}-dev += "${base_libdir}/pkgconfig"
+FILES_${PN}-dev += "${base_libdir}/pkgconfig"
 
 PACKAGES =+ "kpartx"
-FILES:kpartx = "${base_sbindir}/kpartx \
+FILES_kpartx = "${base_sbindir}/kpartx \
                 ${nonarch_base_libdir}/udev/kpartx_id \
                "
 
-RDEPENDS:${PN} += "kpartx"
+RDEPENDS_${PN} += "kpartx"
 PARALLEL_MAKE = ""

@@ -13,8 +13,6 @@ DEPENDS = "gd "
 
 inherit autotools gettext
 
-do_configure:prepend() {
+do_configure_prepend() {
 	sed -i "s#AC_PATH_PROG(GDLIB_CONFIG,gdlib-config)#AC_PATH_PROG([GDLIB_CONFIG],[gdlib-config], ,[${STAGING_BINDIR_CROSS}])#" ${S}/configure.ac
 }
-
-BBCLASSEXTEND = "native nativesdk"

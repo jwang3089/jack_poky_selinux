@@ -9,13 +9,10 @@ LICENSE = "LGPL-2.1"
 LIC_FILES_CHKSUM = "file://COPYING;md5=4fbd65380cdd255951079008b364516c"
 
 DEPENDS = "libxml2 glib-2.0 gssdp gupnp gupnp-av gupnp-dlna gstreamer1.0 gstreamer1.0-plugins-base libgee libsoup-2.4 libmediaart-2.0 libunistring sqlite3 intltool-native"
-RDEPENDS:${PN} = "gstreamer1.0-plugins-base-playback shared-mime-info"
-RRECOMMENDS:${PN} = "rygel-plugin-media-export"
+RDEPENDS_${PN} = "gstreamer1.0-plugins-base-playback shared-mime-info"
+RRECOMMENDS_${PN} = "rygel-plugin-media-export"
 
-inherit gnomebase vala gobject-introspection gettext systemd features_check
-
-# gobject-introspection is mandatory for libmediaart-2.0 and cannot be configured
-REQUIRED_DISTRO_FEATURES = "gobject-introspection-data"
+inherit gnomebase vala gobject-introspection gettext systemd
 
 SRC_URI[archive.md5sum] = "7f95401903a3f855b464d5152b9d4c07"
 SRC_URI[archive.sha256sum] = "08c21a577f7bdad26446a75ffa32778b26842c3b1188165f0b19818559747d00"
@@ -24,7 +21,7 @@ EXTRA_OECONF = "--disable-tracker-plugin --with-media-engine=gstreamer"
 
 PACKAGECONFIG ?= "external mpris ruih media-export gst-launch"
 
-PACKAGECONFIG:append = "${@bb.utils.contains("DISTRO_FEATURES", "x11", " gtk+3", "", d)}"
+PACKAGECONFIG_append = "${@bb.utils.contains("DISTRO_FEATURES", "x11", " gtk+3", "", d)}"
 
 PACKAGECONFIG[external] = "--enable-external-plugin,--disable-external-plugin"
 PACKAGECONFIG[mpris] = "--enable-mpris-plugin,--disable-mpris-plugin"
@@ -36,7 +33,7 @@ PACKAGECONFIG[lms] = "--enable-lms-plugin,--disable-lms-plugin"
 
 LIBV = "2.6"
 
-do_install:append() {
+do_install_append() {
        # Remove .la files for loadable modules
        rm -f ${D}/${libdir}/rygel-${LIBV}/engines/*.la
        rm -f ${D}/${libdir}/rygel-${LIBV}/plugins/*.la
@@ -49,17 +46,17 @@ do_install:append() {
        fi
 }
 
-FILES:${PN} += "${libdir}/rygel-${LIBV}/engines ${datadir}/dbus-1 ${datadir}/icons"
-FILES:${PN}-dbg += "${libdir}/rygel-${LIBV}/engines/.debug ${libdir}/rygel-${LIBV}/plugins/.debug"
+FILES_${PN} += "${libdir}/rygel-${LIBV}/engines ${datadir}/dbus-1 ${datadir}/icons"
+FILES_${PN}-dbg += "${libdir}/rygel-${LIBV}/engines/.debug ${libdir}/rygel-${LIBV}/plugins/.debug"
 
 PACKAGES += "${PN}-meta"
-ALLOW_EMPTY:${PN}-meta = "1"
+ALLOW_EMPTY_${PN}-meta = "1"
 
 PACKAGES_DYNAMIC = "${PN}-plugin-*"
 
-SYSTEMD_SERVICE:${PN} = "rygel.service"
+SYSTEMD_SERVICE_${PN} = "rygel.service"
 
-python populate_packages:prepend () {
+python populate_packages_prepend () {
     rygel_libdir = d.expand('${libdir}/rygel-${LIBV}')
     postinst = d.getVar('plugin_postinst')
     pkgs = []
@@ -68,5 +65,5 @@ python populate_packages:prepend () {
     pkgs += do_split_packages(d, oe.path.join(rygel_libdir, "plugins"), '(.*)\.plugin$', d.expand('${PN}-plugin-%s'), 'Rygel plugin for %s', postinst=postinst, extra_depends=d.expand('${PN}'))
 
     metapkg = d.getVar('PN') + '-meta'
-    d.setVar('RDEPENDS:' + metapkg, ' '.join(pkgs))
+    d.setVar('RDEPENDS_' + metapkg, ' '.join(pkgs))
 }

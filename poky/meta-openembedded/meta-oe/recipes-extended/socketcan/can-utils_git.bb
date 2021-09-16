@@ -6,47 +6,10 @@ DEPENDS = "libsocketcan"
 
 SRC_URI = "git://github.com/linux-can/${BPN}.git;protocol=git"
 
-SRCREV = "3615bac17e539a06835dcb90855eae844ee18053"
+SRCREV = "da65fdfe0d1986625ee00af0b56ae17ec132e700"
 
-PV = "2021.08.0"
+PV = "2020.02.04"
 
 S = "${WORKDIR}/git"
 
-inherit autotools pkgconfig update-alternatives
-
-PACKAGES =+ "${PN}-access ${PN}-isotp ${PN}-j1939 ${PN}-cantest ${PN}-slcan ${PN}-log"
-
-FILES:${PN}-access = " \
-    ${bindir}/cangw \
-    ${bindir}/canlogserver \
-    ${bindir}/bcmserver \
-    ${bindir}/socketcand \
-    ${bindir}/cannelloni \
-"
-
-FILES:${PN}-isotp = "${bindir}/isotp*"
-
-FILES:${PN}-j1939 = " \
-    ${bindir}/j* \
-    ${bindir}/testj1939 \
-"
-
-FILES:${PN}-cantest = " \
-    ${bindir}/canbusload \
-    ${bindir}/can-calc-bit-timing \
-    ${bindir}/canfdtest \
-"
-
-FILES:${PN}-slcan = "${bindir}/slcan*"
-
-FILES:${PN}-log = "${bindir}/*log*"
-
-ALTERNATIVE:${PN} = "candump cansend cansequence"
-ALTERNATIVE_LINK_NAME[candump] = "${bindir}/candump"
-ALTERNATIVE_LINK_NAME[cansend] = "${bindir}/cansend"
-ALTERNATIVE_LINK_NAME[cansequence] = "${bindir}/cansequence"
-
-# busybox ip fails to configure can interfaces, so we need iproute2 to do so.
-# See details in http://www.armadeus.com/wiki/index.php?title=CAN_bus_Linux_driver.
-RRECOMMENDS:${PN} += "iproute2"
-
+inherit autotools pkgconfig

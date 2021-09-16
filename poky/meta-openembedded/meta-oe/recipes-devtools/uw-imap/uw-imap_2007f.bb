@@ -37,9 +37,9 @@ do_install() {
     install c-client/c-client.a ${D}${libdir}/libc-client.a
 }
 
-RPROVIDES:${PN} = "libc-client"
-RREPLACES:${PN} = "libc-client"
-RCONFLICTS:${PN} = "libc-client"
+RPROVIDES_${PN} = "libc-client"
+RREPLACES_${PN} = "libc-client"
+RCONFLICTS_${PN} = "libc-client"
 
-ALLOW_EMPTY:${PN} = "1"
+ALLOW_EMPTY_${PN} = "1"
 

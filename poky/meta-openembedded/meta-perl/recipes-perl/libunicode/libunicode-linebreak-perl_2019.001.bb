@@ -26,7 +26,7 @@ do_install_ptest() {
     chown -R root:root ${D}${PTEST_PATH}
 }
 
-RDEPENDS:${PN} += " \
+RDEPENDS_${PN} += " \
     libmime-charset-perl \
     libsombok3 \
     perl-module-carp \
@@ -40,14 +40,14 @@ RDEPENDS:${PN} += " \
     perl-module-xsloader \
 "
 
-RDEPENDS:${PN}-ptest += " \
+RDEPENDS_${PN}-ptest += " \
     perl-module-findbin \
     perl-module-lib \
     perl-module-strict \
     perl-module-test-more \
 "
 
-RPROVIDES:${PN} += " \
+RPROVIDES_${PN} += " \
     libtext-linefold-perl \
     libunicode-gcstring-perl \
 "

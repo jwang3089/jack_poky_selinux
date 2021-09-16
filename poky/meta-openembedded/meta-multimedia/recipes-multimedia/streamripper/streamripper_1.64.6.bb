@@ -29,4 +29,4 @@ EXTRA_OECONF += "\
 "
 
 # the included argv library needs this
-CPPFLAGS:append = " -DANSI_PROTOTYPES"
+CPPFLAGS_append = " -DANSI_PROTOTYPES"

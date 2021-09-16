@@ -30,7 +30,7 @@ S = "${WORKDIR}/${SRCNAME}-${PV}"
 
 inherit cpan
 
-RDEPENDS:${PN} = " perl-module-test-more \
+RDEPENDS_${PN} = " perl-module-test-more \
                    perl-module-strict \
 "
 

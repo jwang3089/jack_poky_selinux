@@ -32,7 +32,7 @@ do_install () {
     install -m 0644 ${WORKDIR}/nuttcp.socket ${D}${systemd_system_unitdir}
 }
 
-FILES:${PN} += " \
+FILES_${PN} += " \
     ${bindir} \
     ${systemd_system_unitdir} \
 "

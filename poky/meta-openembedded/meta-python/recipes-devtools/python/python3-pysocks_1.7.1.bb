@@ -9,7 +9,7 @@ SRC_URI[sha256sum] = "3f8804571ebe159c380ac6de37643bb4685970655d3bba243530d6558b
 PYPI_PACKAGE = "PySocks"
 inherit pypi setuptools3
 
-RDEPENDS:${PN}:class-target += "\
+RDEPENDS_${PN}_class-target += "\
     ${PYTHON_PN}-email \
     ${PYTHON_PN}-io \
     ${PYTHON_PN}-logging \

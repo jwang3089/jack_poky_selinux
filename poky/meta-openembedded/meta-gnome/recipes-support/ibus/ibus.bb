@@ -19,19 +19,19 @@ PACKAGECONFIG ??= " \
     ${@bb.utils.filter('DISTRO_FEATURES', 'wayland x11', d)} \
 "
 
-do_configure:prepend() {
+do_configure_prepend() {
     # run native unicode-parser
     sed -i 's:$(builddir)/unicode-parser:unicode-parser:g' ${S}/src/Makefile.am
 }
 
-FILES:${PN} += " \
+FILES_${PN} += " \
     ${datadir}/dbus-1 \
     ${datadir}/GConf \
     ${datadir}/glib-2.0 \
     ${libdir}/gtk-3.0 \
 "
 
-FILES:${PN}-dev += " \
+FILES_${PN}-dev += " \
     ${datadir}/gettext \
 "
 

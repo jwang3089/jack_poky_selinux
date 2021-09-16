@@ -16,6 +16,6 @@ COMPATIBLE_HOST = '(x86_64|i.86|powerpc|powerpc64|arm|aarch64|mips).*-linux'
 
 PACKAGES =+ "${PN}-check"
 
-FILES:${PN}-check += "${bindir}/check_for_unsafe_apis"
+FILES_${PN}-check += "${bindir}/check_for_unsafe_apis"
 
-RDEPENDS:${PN}-check += "perl"
+RDEPENDS_${PN}-check += "perl"

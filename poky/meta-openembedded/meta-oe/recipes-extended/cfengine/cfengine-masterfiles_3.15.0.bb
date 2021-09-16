@@ -32,10 +32,10 @@ export EXPLICIT_VERSION="${PV}"
 
 EXTRA_OECONF = "--prefix=${datadir}/cfengine"
 
-do_install:append() {
+do_install_append() {
     rm -rf ${D}${datadir}/cfengine/modules/packages/zypper ${D}${datadir}/cfengine/modules/packages/yum
 }
 
-FILES:${PN} = "${datadir}/cfengine"
+FILES_${PN} = "${datadir}/cfengine"
 
-RDEPENDS:${PN} += "python3-core"
+RDEPENDS_${PN} += "python3-core"

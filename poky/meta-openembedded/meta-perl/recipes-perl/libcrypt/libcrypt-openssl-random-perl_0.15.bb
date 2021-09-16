@@ -19,14 +19,14 @@ EXTRA_CPANFLAGS = "INC='-I${STAGING_INCDIR}' LIBS='-L${STAGING_LIBDIR} -L${STAGI
 
 inherit cpan ptest-perl
 
-RDEPENDS:${PN} += "\
+RDEPENDS_${PN} += "\
     perl-module-exporter \
     perl-module-strict \
     perl-module-vars \
     perl-module-xsloader \
 "
 
-RDEPENDS:${PN}-ptest += "\
+RDEPENDS_${PN}-ptest += "\
     perl-module-file-copy \
     perl-module-test-more \
 "

@@ -25,6 +25,6 @@ do_compile() {
 	cpan_do_compile
 }
 
-RDEPENDS:${PN} += "perl perl-module-perlio"
+RDEPENDS_${PN} += "perl perl-module-perlio"
 
 BBCLASSEXTEND = "native nativesdk"

@@ -31,10 +31,10 @@ CONFLICT_DISTRO_FEATURES = "openssl-no-weak-ciphers"
 
 INITSCRIPT_NAME = "hostapd"
 
-SYSTEMD_SERVICE:${PN} = "hostapd.service"
-SYSTEMD_AUTO_ENABLE:${PN} = "disable"
+SYSTEMD_SERVICE_${PN} = "hostapd.service"
+SYSTEMD_AUTO_ENABLE_${PN} = "disable"
 
-do_configure:append() {
+do_configure_append() {
     install -m 0644 ${WORKDIR}/defconfig ${B}/.config
 }
 
@@ -54,4 +54,4 @@ do_install() {
     sed -i -e 's,@SBINDIR@,${sbindir},g' -e 's,@SYSCONFDIR@,${sysconfdir},g' ${D}${systemd_unitdir}/system/hostapd.service
 }
 
-CONFFILES:${PN} += "${sysconfdir}/hostapd.conf"
+CONFFILES_${PN} += "${sysconfdir}/hostapd.conf"

@@ -13,6 +13,6 @@ S = "${WORKDIR}/git"
 
 inherit autotools pkgconfig gettext
 
-RDEPENDS:${PN} = "perl"
+RDEPENDS_${PN} = "perl"
 
 BBCLASSEXTEND = "native"

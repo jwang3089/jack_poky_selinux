@@ -1,5 +1,5 @@
 SUMMARY = "python-distutils extension"
-DESCRIPTION = "python-distutils extension integrating gettext support, themed icons and scrollkeeper based documentation"
+DESCRITION = "python-distutils extension integrating gettext support, themed icons and scrollkeeper based documentation"
 HOMEPAGE = "https://launchpad.net/python-distutils-extra"
 SECTION = "devel/python"
 LICENSE = "GPLv2"

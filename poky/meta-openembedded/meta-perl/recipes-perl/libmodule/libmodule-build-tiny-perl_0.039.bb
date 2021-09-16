@@ -26,7 +26,7 @@ do_install () {
         cpan_build_do_install
 }
 
-RDEPENDS:${PN} = " libextutils-config-perl \
+RDEPENDS_${PN} = " libextutils-config-perl \
                    libextutils-helpers-perl \
                    libextutils-installpaths-perl \
                    perl-module-xsloader \

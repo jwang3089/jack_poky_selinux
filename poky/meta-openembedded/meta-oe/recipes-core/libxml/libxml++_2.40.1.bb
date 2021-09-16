@@ -22,7 +22,7 @@ do_compile_ptest() {
   oe_runmake -C examples buildtest
 }
 
-FILES:${PN}-doc += "${datadir}/devhelp"
-FILES:${PN}-dev += "${libdir}/libxml++-2.6/include/libxml++config.h"
+FILES_${PN}-doc += "${datadir}/devhelp"
+FILES_${PN}-dev += "${libdir}/libxml++-2.6/include/libxml++config.h"
 
-RDEPENDS:${PN}-ptest += "make"
+RDEPENDS_${PN}-ptest += "make"

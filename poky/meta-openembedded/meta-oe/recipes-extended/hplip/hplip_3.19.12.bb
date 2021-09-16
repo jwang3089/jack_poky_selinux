@@ -45,7 +45,7 @@ EXTRA_OECONF += "\
 
 EXTRA_OEMAKE = "rulessystemdir=${systemd_unitdir}/system/"
 
-do_install:append() {
+do_install_append() {
     rm -rf ${D}${datadir}/hplip/upgrade.py
     rm -rf ${D}${datadir}/hplip/uninstall.py
     sed -i -e "s|/usr/bin/env python|/usr/bin/env python3|g" ${D}${datadir}/hplip/*.py
@@ -54,7 +54,7 @@ do_install:append() {
 
 PACKAGE_BEFORE_PN += "${PN}-ppd ${PN}-cups ${PN}-backend ${PN}-filter ${PN}-hal"
 
-RDEPENDS:${PN} += " \
+RDEPENDS_${PN} += " \
         python3\
         python3-syslog \
         python3-pprint \
@@ -66,23 +66,23 @@ RDEPENDS:${PN} += " \
         python3-resource \
         python3-terminal \
 "
-RDEPENDS:${PN}-filter += "perl"
+RDEPENDS_${PN}-filter += "perl"
 
 # need to snag the debug file or OE will fail on backend package
-FILES:${PN}-dbg += "\
+FILES_${PN}-dbg += "\
         ${libexecdir}/cups/backend/.debug \
         ${PYTHON_SITEPACKAGES_DIR}/.debug \
         ${libexecdir}/cups/filter/.debug "
 
-FILES:${PN}-dev += "${PYTHON_SITEPACKAGES_DIR}/*.la"
-FILES:${PN}-ppd = "${datadir}/ppd"
-FILES:${PN}-cups = "${datadir}/cups"
-FILES:${PN}-backend = "${libexecdir}/cups/backend"
-FILES:${PN}-filter = "${libexecdir}/cups/filter"
-FILES:${PN}-hal = "${datadir}/hal"
+FILES_${PN}-dev += "${PYTHON_SITEPACKAGES_DIR}/*.la"
+FILES_${PN}-ppd = "${datadir}/ppd"
+FILES_${PN}-cups = "${datadir}/cups"
+FILES_${PN}-backend = "${libexecdir}/cups/backend"
+FILES_${PN}-filter = "${libexecdir}/cups/filter"
+FILES_${PN}-hal = "${datadir}/hal"
 
-FILES:${PN} += "${PYTHON_SITEPACKAGES_DIR}/*.so"
+FILES_${PN} += "${PYTHON_SITEPACKAGES_DIR}/*.so"
 
-SYSTEMD_SERVICE:${PN} = "hplip-printer@.service"
+SYSTEMD_SERVICE_${PN} = "hplip-printer@.service"
 
 CLEANBROKEN = "1"

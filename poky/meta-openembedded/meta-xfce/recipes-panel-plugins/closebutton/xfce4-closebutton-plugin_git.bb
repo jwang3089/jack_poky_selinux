@@ -5,14 +5,14 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=b6952d9a47fc2ad0f315510e1290455f"
 
 inherit xfce-panel-plugin xfce-git gtk-icon-cache perlnative
 
-DEPENDS += "xfce4-dev-tools-native libwnck3 xfconf"
+DEPENDS += "exo-native libwnck3 xfconf"
 
-PV = "4.16.0"
+PV = "0.1.0+gitr${SRCPV}"
 
-SRC_URI = "git://github.com/schnitzeltony/xfce4-closebutton-plugin.git"
-SRCREV = "538f9acfc5d5019f5cde734d056bcc0c95da9b4c"
+SRC_URI = "git://github.com/schnitzeltony/xfce4-closebutton-plugin.git;branch=master"
+SRCREV = "6ed5c3ee1ba7103ca854c5e81fb2c1220b913a40"
 S = "${WORKDIR}/git"
 
 EXTRA_OECONF += "--enable-maintainer-mode"
 
-FILES:${PN} += "${datadir}/xfce4/closebutton/themes"
+FILES_${PN} += "${datadir}/xfce4/closebutton/themes"

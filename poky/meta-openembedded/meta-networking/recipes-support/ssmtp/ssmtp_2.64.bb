@@ -25,7 +25,7 @@ EXTRA_OEMAKE = "GEN_CONFIG='/bin/true'"
 
 LDFLAGS += "${@bb.utils.contains('PACKAGECONFIG', 'ssl', '-lssl -lcrypto', '', d)}"
 
-do_install:append () {
+do_install_append () {
     install -d ${D}${mandir}/
     mv ${D}${exec_prefix}/man/* ${D}${mandir}/
     rmdir ${D}${exec_prefix}/man
@@ -36,7 +36,7 @@ do_install:append () {
 
 ALTERNATIVE_PRIORITY_${PN} = "100"
 
-ALTERNATIVE:${PN} = "mailq newaliases sendmail"
+ALTERNATIVE_${PN} = "mailq newaliases sendmail"
 ALTERNATIVE_LINK_NAME[sendmail] = "${sbindir}/sendmail"
 ALTERNATIVE_LINK_NAME[newaliases] = "${sbindir}/newaliases"
 ALTERNATIVE_LINK_NAME[mailq] = "${sbindir}/mailq"

@@ -4,16 +4,16 @@ LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://COPYING;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 
 SRC_URI = "git://github.com/ubinux/dnf-plugin-tui.git;branch=master "
-SRCREV = "b0d80b7129f1d84cc563a4098d869e7420bcf4bc"
-PV = "1.3"
+SRCREV = "c5416adeb210154dc4ccc4c3e1c5297d83ebd41e"
+PV = "1.1"
 
-SRC_URI:append:class-target = " file://oe-remote.repo.sample"
+SRC_URI_append_class-target = "file://oe-remote.repo.sample"
 
 inherit distutils3-base
 
 S = "${WORKDIR}/git"
 
-do_install:append() {
+do_install_append() {
     install -d ${D}${datadir}/dnf
     install -m 0755 ${S}/samples/* ${D}${datadir}/dnf
     install -d ${D}${PYTHON_SITEPACKAGES_DIR}/dnf-plugins/mkimg
@@ -23,14 +23,14 @@ do_install:append() {
     done
 }
 
-do_install:append:class-target() {
+do_install_append_class-target() {
     install -d ${D}${sysconfdir}/yum.repos.d
     install -m 0644 ${WORKDIR}/oe-remote.repo.sample ${D}${sysconfdir}/yum.repos.d
 }
 
-FILES:${PN} += "${datadir}/dnf"
+FILES_${PN} += "${datadir}/dnf"
 
-RDEPENDS:${PN} += " \
+RDEPENDS_${PN} += " \
     bash \
     dnf \
     libnewt-python \

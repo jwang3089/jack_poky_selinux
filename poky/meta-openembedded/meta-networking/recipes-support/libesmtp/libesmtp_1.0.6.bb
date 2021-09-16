@@ -30,9 +30,9 @@ EXTRA_OECONF = " \
     --disable-static                               \
 "
 
-FILES:${PN} = "${libdir}/lib*${SOLIBS} \
+FILES_${PN} = "${libdir}/lib*${SOLIBS} \
                ${libdir}/esmtp-plugins/*${SOLIBSDEV}"
 
-FILES:${PN}-dev  += "${libdir}/esmtp-plugins/*.la"
-FILES:${PN}-static += "${libdir}/esmtp-plugins/*.a"
-FILES:${PN}-dbg += "${libdir}/esmtp-plugins/.debug/"
+FILES_${PN}-dev  += "${libdir}/esmtp-plugins/*.la"
+FILES_${PN}-static += "${libdir}/esmtp-plugins/*.a"
+FILES_${PN}-dbg += "${libdir}/esmtp-plugins/.debug/"

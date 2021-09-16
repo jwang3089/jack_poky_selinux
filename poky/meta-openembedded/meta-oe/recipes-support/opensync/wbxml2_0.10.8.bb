@@ -19,5 +19,5 @@ EXTRA_OECMAKE = "-DLIB_SUFFIX=${@d.getVar('baselib').replace('lib', '')}"
 
 PACKAGES += "${PN}-tools"
 
-FILES:${PN}-tools = "${bindir}"
-FILES:${PN} = "${libdir}/*.so.*"
+FILES_${PN}-tools = "${bindir}"
+FILES_${PN} = "${libdir}/*.so.*"

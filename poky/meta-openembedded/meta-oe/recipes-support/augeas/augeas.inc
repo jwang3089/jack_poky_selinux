@@ -15,19 +15,19 @@ inherit autotools pkgconfig
 
 PACKAGES =+ "${PN}-lenses lib${BPN}"
 
-FILES:${PN}-lenses = "${datadir}/augeas/lenses"
-FILES:lib${BPN} = "${libdir}/lib*${SOLIBS}"
+FILES_${PN}-lenses = "${datadir}/augeas/lenses"
+FILES_lib${BPN} = "${libdir}/lib*${SOLIBS}"
 
-RDEPENDS:lib${BPN} += "${PN}-lenses"
-RRECOMMENDS:lib${BPN} += "${PN}"
+RDEPENDS_lib${BPN} += "${PN}-lenses"
+RRECOMMENDS_lib${BPN} += "${PN}"
 
 LEAD_SONAME = "libaugeas.so"
 
-do_install:append() {
+do_install_append() {
     rm -fr ${D}${datadir}/vim
 }
 
-PACKAGECONFIG ??= "${@bb.utils.filter('DISTRO_FEATURES', 'selinux', d)}"
-PACKAGECONFIG[selinux] = "--with-selinux,--without-selinux,libselinux"
+PACKAGECONFIG ??= ""
+PACKAGECONFIG[libselinux] = "--with-selinux,--without-selinux,libselinux"
 
 EXTRA_AUTORECONF += "-I ${S}/gnulib/m4"

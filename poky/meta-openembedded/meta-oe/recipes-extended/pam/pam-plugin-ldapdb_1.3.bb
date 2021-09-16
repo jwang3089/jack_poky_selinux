@@ -21,4 +21,4 @@ do_install () {
     oe_runmake install DESTDIR=${D} PAMDIR=${base_libdir}/security
 }
 
-FILES:${PN} += "${base_libdir}/security/pam_ldapdb.so"
+FILES_${PN} += "${base_libdir}/security/pam_ldapdb.so"

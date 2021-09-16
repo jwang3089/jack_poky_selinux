@@ -33,11 +33,11 @@ do_install() {
         install -m 0644 ${S}/smem.8 ${D}/${mandir}/man8/
 }
 
-RDEPENDS:${PN} = "python3-core python3-compression"
-RRECOMMENDS:${PN} = "python3-matplotlib python3-numpy"
+RDEPENDS_${PN} = "python3-core python3-compression"
+RRECOMMENDS_${PN} = "python3-matplotlib python3-numpy"
 
 PACKAGE_BEFORE_PN = "smemcap"
 
-FILES:smemcap = "${bindir}/smemcap"
+FILES_smemcap = "${bindir}/smemcap"
 
 BBCLASSEXTEND = "native"

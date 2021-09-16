@@ -21,6 +21,6 @@ PACKAGECONFIG[ipv6] = "--enable-ipv6,--disable-ipv6,"
 
 inherit autotools pkgconfig
 
-do_configure:prepend() {
+do_configure_prepend() {
     (cd ${S}; ./autogen.sh; cd -)
 }

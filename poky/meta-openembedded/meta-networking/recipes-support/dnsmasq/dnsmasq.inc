@@ -37,7 +37,7 @@ EXTRA_OEMAKE = "\
 
 SRC_URI += "${@bb.utils.contains('PACKAGECONFIG', 'resolvconf', 'file://dnsmasq.resolvconf file://99_dnsmasq file://dnsmasq-resolvconf-helper', '', d)}"
 
-do_compile:append() {
+do_compile_append() {
     # build dhcp_release
     cd ${S}/contrib/lease-tools
     oe_runmake
@@ -78,9 +78,9 @@ do_install () {
     fi
 }
 
-CONFFILES:${PN} = "${sysconfdir}/dnsmasq.conf"
+CONFFILES_${PN} = "${sysconfdir}/dnsmasq.conf"
 
-RPROVIDES:${PN} += "${PN}-systemd"
-RREPLACES:${PN} += "${PN}-systemd"
-RCONFLICTS:${PN} += "${PN}-systemd"
-SYSTEMD_SERVICE:${PN} = "dnsmasq.service"
+RPROVIDES_${PN} += "${PN}-systemd"
+RREPLACES_${PN} += "${PN}-systemd"
+RCONFLICTS_${PN} += "${PN}-systemd"
+SYSTEMD_SERVICE_${PN} = "dnsmasq.service"

@@ -31,5 +31,3 @@ do_install_ptest() {
     mkdir -p ${D}${PTEST_PATH}/tests
     install -m 0755 -t ${D}${PTEST_PATH}/tests/ ${B}/test/.libs/*
 }
-
-PROVIDES += "oniguruma"

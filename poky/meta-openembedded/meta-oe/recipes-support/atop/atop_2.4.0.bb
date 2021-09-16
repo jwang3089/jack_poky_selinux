@@ -48,9 +48,9 @@ do_install() {
 
 inherit systemd
 
-SYSTEMD_SERVICE:${PN} = "atop.service atopgpu.service"
+SYSTEMD_SERVICE_${PN} = "atop.service atopgpu.service"
 SYSTEMD_AUTO_ENABLE = "disable"
 
-FILES:${PN} += "${systemd_unitdir}/system-sleep"
+FILES_${PN} += "${systemd_unitdir}/system-sleep"
 
-RDEPENDS:${PN} = "procps"
+RDEPENDS_${PN} = "procps"

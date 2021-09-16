@@ -22,14 +22,16 @@ SRC_URI = " \
     file://nginx-volatile.conf \
     file://nginx.service \
     file://nginx-fix-pidfile.patch \
+    file://CVE-2021-23017.patch \
+    file://CVE-2021-3618.patch \
 "
 
 inherit siteinfo update-rc.d useradd systemd
 
-SYSTEMD_SERVICE:${PN} = "nginx.service"
+SYSTEMD_SERVICE_${PN} = "nginx.service"
 
-CFLAGS:append = " -fPIE -pie"
-CXXFLAGS:append = " -fPIE -pie"
+CFLAGS_append = " -fPIE -pie"
+CXXFLAGS_append = " -fPIE -pie"
 
 NGINX_WWWDIR ?= "${localstatedir}/www/localhost"
 NGINX_USER   ?= "www"
@@ -65,7 +67,7 @@ do_configure () {
     --with-ptr-size=${PTRSIZE} \
     --with-sig-atomic-t=${PTRSIZE} \
     --with-size-t=${PTRSIZE} \
-    --with-off-t=8 \
+    --with-off-t=${PTRSIZE} \
     --with-time-t=${PTRSIZE} \
     --with-sys-nerr=132 \
     --conf-path=${sysconfdir}/nginx/nginx.conf \
@@ -143,7 +145,7 @@ do_install () {
     rm -rf ${D}${localstatedir}/log/
 }
 
-pkg_postinst:${PN} () {
+pkg_postinst_${PN} () {
     if [ -z "$D" ]; then
         if type systemd-tmpfiles >/dev/null; then
             systemd-tmpfiles --create
@@ -153,12 +155,12 @@ pkg_postinst:${PN} () {
     fi
 }
 
-FILES:${PN} += " \
+FILES_${PN} += " \
     ${localstatedir}/ \
     ${systemd_unitdir}/system/nginx.service \
 "
 
-CONFFILES:${PN} = " \
+CONFFILES_${PN} = " \
     ${sysconfdir}/nginx/nginx.conf \
     ${sysconfdir}/nginx/fastcgi.conf \
     ${sysconfdir}/nginx/fastcgi_params \
@@ -174,7 +176,7 @@ INITSCRIPT_NAME = "nginx"
 INITSCRIPT_PARAMS = "defaults 92 20"
 
 USERADD_PACKAGES = "${PN}"
-USERADD_PARAM:${PN} = " \
+USERADD_PARAM_${PN} = " \
     --system --no-create-home \
     --home ${NGINX_WWWDIR} \
     --groups www-data \

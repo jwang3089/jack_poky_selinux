@@ -4,24 +4,20 @@ SECTION = "libs"
 LICENSE = "LGPLv2.1+"
 LIC_FILES_CHKSUM = "file://COPYING.txt;md5=7c13b3376cea0ce68d2d2da0a1b3a72c"
 
-SRCREV = "565bf68eccfdbbf22cf5cb6d792e23de564665c7"
-PV = "0.21+git${SRCPV}"
+SRCREV = "5f5af2e417129ad8f4e05fc5c1b730f0694dca12"
+PV = "0.19+git${SRCPV}"
 
-SRC_URI = "git://github.com/analogdevicesinc/libiio.git;protocol=https \
-           file://0001-python-Do-not-verify-whether-libiio-is-installed-whe.patch \
-"
+SRC_URI = "git://github.com/analogdevicesinc/libiio.git;protocol=https"
 UPSTREAM_CHECK_GITTAGREGEX = "v(?P<pver>\d+(\.\d+)+)"
 
 S = "${WORKDIR}/git"
 
-DISTUTILS_SETUP_PATH ?= "${B}/bindings/python/"
+inherit cmake python3native systemd
 
 DEPENDS = " \
     flex-native bison-native libaio \
     ${@bb.utils.contains('DISTRO_FEATURES', 'zeroconf', 'avahi', '', d)} \
 "
-
-inherit cmake python3native systemd setuptools3
 
 EXTRA_OECMAKE = " \
     -DCMAKE_BUILD_TYPE=RelWithDebInfo \
@@ -29,43 +25,24 @@ EXTRA_OECMAKE = " \
     ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', '-DWITH_SYSTEMD=ON -DSYSTEMD_UNIT_INSTALL_DIR=${systemd_system_unitdir}', '', d)} \
 "
 
-PACKAGECONFIG ??= "usb_backend network_backend serial_backend"
+PACKAGECONFIG ??= "usb_backend network_backend"
 
-PACKAGECONFIG[usb_backend] = "-DWITH_USB_BACKEND=ON,-DWITH_USB_BACKEND=OFF,libusb1 libxml2"
+PACKAGECONFIG[usb_backend] = "-DWITH_USB_BACKEND=ON,-DWITH_USB_BACKEND=OFF,libusb1,libxml2"
 PACKAGECONFIG[network_backend] = "-DWITH_NETWORK_BACKEND=ON,-DWITH_NETWORK_BACKEND=OFF,libxml2"
-PACKAGECONFIG[serial_backend] = "-DWITH_SERIAL_BACKEND=ON,-DWITH_SERIAL_BACKEND=off,libserialport libxml2"
 PACKAGECONFIG[libiio-python3] = "-DPYTHON_BINDINGS=ON,-DPYTHON_BINDINGS=OFF"
+
+inherit ${@bb.utils.contains('PACKAGECONFIG', 'libiio-python3', 'distutils3-base', '', d)}
 
 PACKAGES =+ "${PN}-iiod ${PN}-tests ${PN}-${PYTHON_PN}"
 
-RDEPENDS:${PN}-${PYTHON_PN} = "${PN} ${PYTHON_PN}-ctypes ${PYTHON_PN}-stringold"
+RDEPENDS_${PN}-${PYTHON_PN} = "${PN} ${PYTHON_PN}-ctypes ${PYTHON_PN}-stringold"
 
-FILES:${PN}-iiod = " \
+FILES_${PN}-iiod = " \
     ${sbindir}/iiod \
     ${systemd_system_unitdir}/iiod.service \
 "
-FILES:${PN}-tests = "${bindir}"
-FILES:${PN}-${PYTHON_PN} = "${PYTHON_SITEPACKAGES_DIR}"
+FILES_${PN}-tests = "${bindir}"
+FILES_${PN}-${PYTHON_PN} = "${PYTHON_SITEPACKAGES_DIR}"
 
 SYSTEMD_PACKAGES = "${PN}-iiod"
-SYSTEMD_SERVICE:${PN}-iiod = "iiod.service"
-
-# Explicitly define do_configure, do_compile and do_install because both cmake and setuptools3 have
-# EXPORT_FUNCTIONS do_configure do_compile do_install
-do_configure() {
-    cmake_do_configure
-}
-
-do_compile() {
-    if ${@bb.utils.contains('PACKAGECONFIG', 'libiio-python3', 'true', 'false', d)}; then
-        distutils3_do_compile
-    fi
-    cmake_do_compile
-}
-
-do_install() {
-    if ${@bb.utils.contains('PACKAGECONFIG', 'libiio-python3', 'true', 'false', d)}; then
-        distutils3_do_install
-    fi
-    cmake_do_install
-}
+SYSTEMD_SERVICE_${PN}-iiod = "iiod.service"

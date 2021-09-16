@@ -9,7 +9,7 @@ SRC_URI = "git://github.com/ago/pps-tools.git"
 
 S = "${WORKDIR}/git"
 
-RDEPENDS:${PN} = "bash"
+RDEPENDS_${PN} = "bash"
 
 do_install() {
         install -d ${D}${bindir} ${D}${includedir} \

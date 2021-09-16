@@ -12,7 +12,7 @@ S = "${WORKDIR}/cxxtest-${PV}/python"
 
 inherit distutils3
 
-do_install:append() {
+do_install_append() {
     install -d ${D}${includedir}
     cp -a ../cxxtest ${D}${includedir}
     sed '1c\
