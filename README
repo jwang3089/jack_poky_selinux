@@ -1,0 +1,153 @@
+########### dunfell:
+
+########### yocto:
+https://git.yoctoproject.org/git/poky
+
+########### 
+https://github.com/ni/meta-selinux.git
+git checkout origin/dunfell
+
+########### 
+https://github.com/openembedded/meta-openembedded.git
+git checkout origin/dunfell
+
+########### 
+https://git.yoctoproject.org/cgit/cgit.cgi/meta-virtualization/
+https://git.yoctoproject.org/git/meta-virtualization
+git checkout origin/dunfell
+
+
+########### 
+Enable ssh with no password: local.conf
+IMAGE_INSTALL_append += " packagegroup-core-ssh-openssh"
+IMAGE_INSTALL_append += "openssh-sftp-server"
+## No PASSWORD
+EXTRA_IMAGE_FEATURES ?= "debug-tweaks ssh-server-openssh"
+
+########### 
+## DELETE tap
+sudo ip link delet tapX
+
+
+##########
+Add bblaer the metas
+
+########### 
+PACTHES:
+This fixes the error below:
+
+gcc: error: unrecognized command line option
+‘-fmacro-prefix-map=/path/to/build/libselinux-python/3.0-r0=/usr/src/debug/libselinux-python/3.0-r0’
+
+Without inheriting the config, supposedly a wrong compiler is used.
+
+########### 
+Signed-off-by: Anatol Belski <anbelski@linux.microsoft.com>
+Signed-off-by: Joe MacDonald <joe@deserted.net>
+Diffstat
+-rw-r--r--	recipes-security/selinux/libselinux-python_3.0.bb	2	
+		
+1 files changed, 2 insertions, 0 deletions
+diff --git a/recipes-security/selinux/libselinux-python_3.0.bb b/recipes-security/selinux/libselinux-python_3.0.bb
+index 2b5438d..3c03df1 100644
+--- a/recipes-security/selinux/libselinux-python_3.0.bb
++++ b/recipes-security/selinux/libselinux-python_3.0.bb
+@@ -4,6 +4,8 @@ SRC_URI = "https://github.com/SELinuxProject/selinux/releases/download/${SELINUX
+ 
+ require ${BPN}.inc
+ 
++inherit python3targetconfig
++
+ LIC_FILES_CHKSUM = "file://LICENSE;md5=84b4d2c6ef954a2d4081e775a270d0d0"
+ 
+ SRC_URI[md5sum] = "b387a66f087b6d97713570e85ec89d89"
+
+Dependencies (use sumo meta-selinux, meta-openembedded, meta-virtualization)
+
+########### 
+local.conf:
+MACHINE ??= "qemux86-64"
+
+########### 
+>> runqemu qemux86-64
+
+
+################# Add in the bbappend:
+./meta/recipes-core/images/core-image-minimal.bb
+packagegroup-core-selinux
+
+########### 
+scripts/runqemu:
+        mach = self.get('MACHINE')
+        if not mach.startswith('qemumips'):
+            self.kernel_cmdline_script += ' JACKWANG FIMXE=0xDEADBEFF selinux=1 enforcing=0 mem=%s' % self.get('QB_MEM').replace('-m','').strip() + 'M'
+
+
+------------
+
+This layer depends on the openembedded-core metadata.
+
+This layer also optionally depends on the following layers:
+
+URI: git://github.com/openembedded/meta-oe.git
+branch: master
+revision: HEAD
+layers: meta-oe
+        meta-networking
+        meta-python
+
+URI: git://git.yoctoproject.org/meta-virtualization
+branch: master
+revision: HEAD
+
+
+########### 
+# Enable SELinux
+DISTRO_FEATURES_append = " acl xattr pam selinux"
+
+########### 
+# Enable SELinux with policy
+You must also specify a preferred provider for the virtual/refpolicy.  The
+included policies with this layer are simply reference policies and will need
+to be tailored for your environment.  
+* Enable the refpolicy-mls:
+########### 
+e.g. PREFERRED_PROVIDER_virtual/refpolicy ?= "refpolicy-mls"
+
+
+Using different init manager
+----------------------------
+By default selinux enabled images coming up with "sysvinit" as init manager,
+we can use "systemd" as an init manager using below changes to local.conf
+
+########### 
+* enable systemd as init manager changes to local.conf
+DISTRO_FEATURES_remove = " sysvinit"
+DISTRO_FEATURES_append = " systemd"
+VIRTUAL-RUNTIME_init_manager = "systemd"
+DISTRO_FEATURES_BACKFILL_CONSIDERED = ""
+
+
+Starting up the system
+----------------------
+Most likely the reference policy selected will not just work "out of the box".
+
+As always, if you update the reference policy to better work with OpenEmbedded
+or Poky configurations, please submit the changes back to the project.
+
+When using 'core-image-selinux', the system will boot and automatically setup
+the policy by running the "fixfiles -f -F relabel" for you.  This is
+implemented via the 'selinux-autorelabel' recipe.
+
+The 'core-image-selinux-minimal' does not automatically relabel the system.
+So you must boot using the parameters "selinux=1 enforcing=0", and then
+manually perform the setup.  Running 'fixfiles -f -F relabel' is available
+in this configuratio
+
+########### 
+>> sestatus
+
+
+##########
+
+When booting need to type CTRL-C
